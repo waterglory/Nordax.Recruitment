@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Nordax.Bank.Recruitment.DataAccess\Nordax.Bank.Recruitment.DataAccess.csproj" />
+	  <ProjectReference Include="..\Nordax.Bank.Recruitment.Shared\Nordax.Bank.Recruitment.Shared.csproj" />
+	</ItemGroup>
+
+</Project>

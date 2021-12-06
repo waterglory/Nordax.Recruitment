@@ -1,0 +1,18 @@
+
+
+.hiddenTopStyle {
+    transform: translateY(-100vh);
+    opacity: 0;
+    transition: transform 600ms ease 0s, opacity 300ms ease 0s;
+}
+
+.hiddenBotStyle {
+    transform: translateY(100vh);
+    opacity: 0;
+    transition: transform 600ms ease 0s, opacity 300ms ease 0s;
+}
+
+.visibleStyle {
+    transform: translateY(0);
+    transition: transform 600ms ease 0s, opacity 300ms ease 0s;
+}

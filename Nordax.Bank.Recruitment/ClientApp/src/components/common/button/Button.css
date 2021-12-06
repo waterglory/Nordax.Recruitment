@@ -1,0 +1,46 @@
+@import '../common.css';
+
+.nordax_button {
+    color: white;
+    background-color: var(--nordax_red);
+    width: 100%;
+    display: inline-block;
+    border: 1px solid transparent;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.8rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out,
+                opacity 0.2s ease-in-out, visibility 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.nordax_button:hover {
+    filter: brightness(90%);
+    color: white;
+    text-decoration: none;
+}
+
+.nordax_button.red {
+    color: white;
+    background-color: var(--nordax_red);
+}
+
+.nordax_button.red:hover {
+    color: white;
+}
+
+.nordax_button.gray {
+    color: white;
+    background-color: gray;
+}
+
+.nordax_button.gray {
+    color: white;
+}
+
+.nordax_button:disabled {
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out, transform 0.2s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(5vh);
+}
