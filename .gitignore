@@ -74,3 +74,6 @@ TestResult.xml
 
 # Rider
 .idea
+
+# Package json
+*/node_modules

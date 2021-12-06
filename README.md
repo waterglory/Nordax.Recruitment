@@ -13,7 +13,7 @@ The task at hand consists in writing code in all parts of the stack:
     2. Implement a simple loan-application overview to display current loan-applications
 2.	**Backend:** Start in the LoanApplication controller
     1. Implement support in the API to accept loan application data
-    2. Implement support to fetch loan application and corresponding files
+    2. Implement support to fetch loan applications and corresponding files
 3.	**Database** (Using Entity Framework):
     1. Implement relevant entities, repositories and dependencies
     2. Database changes should be version controlled using ef core migrations
