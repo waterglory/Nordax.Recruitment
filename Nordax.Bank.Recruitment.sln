@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30907.101
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nordax.Bank.Recruitment", "Nordax.Bank.Recruitment\Nordax.Bank.Recruitment.csproj", "{F4C90A46-9C99-4003-A7C4-B76D7989AF4D}"
 EndProject
@@ -11,15 +11,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{AD2F3E68-1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{717A1FF1-0736-48B8-9F8C-0F9E757321AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nordax.Bank.Recruitment.DataAccess", "Nordax.Bank.Recruitment.DataAccess\Nordax.Bank.Recruitment.DataAccess.csproj", "{AFA380D9-0A48-42D3-956F-C10A11C8F63A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nordax.Bank.Recruitment.DataAccess", "Nordax.Bank.Recruitment.DataAccess\Nordax.Bank.Recruitment.DataAccess.csproj", "{AFA380D9-0A48-42D3-956F-C10A11C8F63A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nordax.Bank.Recruitment.Domain", "Nordax.Bank.Recruitment.Domain\Nordax.Bank.Recruitment.Domain.csproj", "{8AB04777-038C-4C20-AE9B-693A7031888B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nordax.Bank.Recruitment.Domain", "Nordax.Bank.Recruitment.Domain\Nordax.Bank.Recruitment.Domain.csproj", "{8AB04777-038C-4C20-AE9B-693A7031888B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nordax.Bank.Recruitment.Shared", "Nordax.Bank.Recruitment.Shared\Nordax.Bank.Recruitment.Shared.csproj", "{F22EDC63-FE05-43ED-943C-28CECEAB598A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nordax.Bank.Recruitment.Shared", "Nordax.Bank.Recruitment.Shared\Nordax.Bank.Recruitment.Shared.csproj", "{F22EDC63-FE05-43ED-943C-28CECEAB598A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nordax.Bank.Recruitment.DataAccess.Tests", "Nordax.Bank.Recruitment.DataAccess.Tests\Nordax.Bank.Recruitment.DataAccess.Tests.csproj", "{9197042D-7DBD-4B34-A755-B40309326A9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nordax.Bank.Recruitment.DataAccess.Tests", "Nordax.Bank.Recruitment.DataAccess.Tests\Nordax.Bank.Recruitment.DataAccess.Tests.csproj", "{9197042D-7DBD-4B34-A755-B40309326A9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nordax.Bank.Recruitment.Doman.Tests", "Nordax.Bank.Recruitment.Doman.Tests\Nordax.Bank.Recruitment.Doman.Tests.csproj", "{4E5B81F8-DC4E-445D-8ECC-F531EEFE0F68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nordax.Bank.Recruitment.Domain.Tests", "Nordax.Bank.Recruitment.Domain.Tests\Nordax.Bank.Recruitment.Domain.Tests.csproj", "{4E5B81F8-DC4E-445D-8ECC-F531EEFE0F68}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Nordax.Bank.Recruitment.ClientApp", "Nordax.Bank.Recruitment\ClientApp\Nordax.Bank.Recruitment.ClientApp.esproj", "{0ACC738F-D5DC-479A-896F-970FC997813D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,12 @@ Global
 		{4E5B81F8-DC4E-445D-8ECC-F531EEFE0F68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E5B81F8-DC4E-445D-8ECC-F531EEFE0F68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E5B81F8-DC4E-445D-8ECC-F531EEFE0F68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ACC738F-D5DC-479A-896F-970FC997813D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ACC738F-D5DC-479A-896F-970FC997813D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ACC738F-D5DC-479A-896F-970FC997813D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{0ACC738F-D5DC-479A-896F-970FC997813D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ACC738F-D5DC-479A-896F-970FC997813D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ACC738F-D5DC-479A-896F-970FC997813D}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +70,7 @@ Global
 		{F22EDC63-FE05-43ED-943C-28CECEAB598A} = {AD2F3E68-1822-4DF7-8D7D-D3D2DDA41B0D}
 		{9197042D-7DBD-4B34-A755-B40309326A9C} = {717A1FF1-0736-48B8-9F8C-0F9E757321AE}
 		{4E5B81F8-DC4E-445D-8ECC-F531EEFE0F68} = {717A1FF1-0736-48B8-9F8C-0F9E757321AE}
+		{0ACC738F-D5DC-479A-896F-970FC997813D} = {C522A762-4FC6-49EC-A6C5-7E860D05AFEE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5E9DB6BF-5CDF-410C-A767-0E2559D4F2CE}

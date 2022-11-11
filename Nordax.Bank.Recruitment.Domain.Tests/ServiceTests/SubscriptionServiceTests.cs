@@ -5,7 +5,7 @@ using Nordax.Bank.Recruitment.DataAccess.Exceptions;
 using Nordax.Bank.Recruitment.DataAccess.Repositories;
 using Nordax.Bank.Recruitment.Domain.Services;
 
-namespace Nordax.Bank.Recruitment.Doman.Tests.ServiceTests
+namespace Nordax.Bank.Recruitment.Domain.Tests.ServiceTests
 {
     [TestClass]
     public class SubscriptionServiceTests
