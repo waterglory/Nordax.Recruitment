@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nordax.Bank.Recruitment.Sha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nordax.Bank.Recruitment.DataAccess.Tests", "Nordax.Bank.Recruitment.DataAccess.Tests\Nordax.Bank.Recruitment.DataAccess.Tests.csproj", "{9197042D-7DBD-4B34-A755-B40309326A9C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nordax.Bank.Recruitment.Doman.Tests", "Nordax.Bank.Recruitment.Doman.Tests\Nordax.Bank.Recruitment.Doman.Tests.csproj", "{4E5B81F8-DC4E-445D-8ECC-F531EEFE0F68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nordax.Bank.Recruitment.Domain.Tests", "Nordax.Bank.Recruitment.Domain.Tests\Nordax.Bank.Recruitment.Domain.Tests.csproj", "{4E5B81F8-DC4E-445D-8ECC-F531EEFE0F68}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Nordax.Bank.Recruitment.ClientApp", "Nordax.Bank.Recruitment\ClientApp\Nordax.Bank.Recruitment.ClientApp.esproj", "{0ACC738F-D5DC-479A-896F-970FC997813D}"
 EndProject
