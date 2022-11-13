@@ -1,12 +1,12 @@
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Nordax.Bank.Recruitment.DataAccess.Entities;
+using Nordax.Bank.Recruitment.DataAccess.Entities.Subscriber;
 using Nordax.Bank.Recruitment.DataAccess.Exceptions;
 using Nordax.Bank.Recruitment.DataAccess.Factories;
 using Nordax.Bank.Recruitment.DataAccess.Repositories;
 using Nordax.Bank.Recruitment.DataAccess.Tests.Configuration;
+using System.Threading.Tasks;
 
 namespace Nordax.Bank.Recruitment.DataAccess.Tests.RepositoryTests
 {

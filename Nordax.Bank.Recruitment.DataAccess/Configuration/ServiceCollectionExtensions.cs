@@ -21,12 +21,12 @@ namespace Nordax.Bank.Recruitment.DataAccess.Configuration
 
         private static void AddRepositories(this IServiceCollection services)
         {
-            services.AddTransient<ISubscriptionRepository, SubscriptionRepository>();
+            services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
         }
 
         private static void AddFactories(this IServiceCollection services)
         {
-            services.AddTransient<IDbContextFactory, DbContextFactory>();
+            services.AddScoped<IDbContextFactory, DbContextFactory>();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Nordax.Bank.Recruitment.DataAccess.Entities;
+using Nordax.Bank.Recruitment.DataAccess.Entities.Subscriber;
 
 namespace Nordax.Bank.Recruitment.DataAccess
 {

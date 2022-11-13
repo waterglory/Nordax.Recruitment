@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Nordax.Bank.Recruitment.DataAccess.Entities;
+using Nordax.Bank.Recruitment.DataAccess.Entities.Subscriber;
 using Nordax.Bank.Recruitment.DataAccess.Exceptions;
 using Nordax.Bank.Recruitment.DataAccess.Factories;
 using Nordax.Bank.Recruitment.Shared.Models;

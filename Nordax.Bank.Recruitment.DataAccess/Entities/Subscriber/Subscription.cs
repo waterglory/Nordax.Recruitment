@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Nordax.Bank.Recruitment.Shared.Models;
 
-namespace Nordax.Bank.Recruitment.DataAccess.Entities
+namespace Nordax.Bank.Recruitment.DataAccess.Entities.Subscriber
 {
     public class Subscription
     {
@@ -19,9 +19,9 @@ namespace Nordax.Bank.Recruitment.DataAccess.Entities
 
         public Guid Id { get; set; }
 
-        [Required] [MaxLength(200)] public string Name { get; set; }
+        [Required][MaxLength(200)] public string Name { get; set; }
 
-        [Required] [MaxLength(200)] public string Email { get; set; }
+        [Required][MaxLength(200)] public string Email { get; set; }
 
         public DateTime SignUpDate { get; set; }
 
