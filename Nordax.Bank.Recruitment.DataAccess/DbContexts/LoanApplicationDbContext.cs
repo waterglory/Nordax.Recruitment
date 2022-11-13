@@ -5,7 +5,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.DbContexts
 {
 	public class LoanApplicationDbContext : DbContext
 	{
-		public LoanApplicationDbContext(DbContextOptions options) : base(options) { }
+		public LoanApplicationDbContext(DbContextOptions<LoanApplicationDbContext> options) : base(options) { }
 
 		public DbSet<LoanApplication> LoanApplications { get; set; }
 		public DbSet<Applicant> Applicants { get; set; }

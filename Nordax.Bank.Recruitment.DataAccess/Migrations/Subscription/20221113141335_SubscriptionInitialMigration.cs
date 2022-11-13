@@ -1,9 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Nordax.Bank.Recruitment.DataAccess.Migrations
+#nullable disable
+
+namespace Nordax.Bank.Recruitment.DataAccess.Migrations.Subscription
 {
-    public partial class InitialMigration : Migration
+    public partial class SubscriptionInitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

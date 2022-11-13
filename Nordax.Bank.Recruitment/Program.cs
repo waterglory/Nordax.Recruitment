@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Nordax.Bank.Recruitment.DataAccess.DbContexts;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 
 namespace Nordax.Bank.Recruitment
 {
-    public class Program
+	public class Program
 	{
 		public static void Main(string[] args)
 		{
@@ -32,8 +32,14 @@ namespace Nordax.Bank.Recruitment
 #if DEBUG
 			using (var scope = host.Services.CreateScope())
 			{
-				var db = scope.ServiceProvider.GetRequiredService<SubscriptionDbContext>();
-				db.Database.Migrate();
+				var dbContexts = new List<DbContext>
+				{
+					scope.ServiceProvider.GetRequiredService<SubscriptionDbContext>(),
+					scope.ServiceProvider.GetRequiredService<LoanApplicationDbContext>(),
+					scope.ServiceProvider.GetRequiredService<CustomerDbContext>(),
+					scope.ServiceProvider.GetRequiredService<FileDbContext>()
+				};
+				dbContexts.ForEach(ctx => ctx.Database.Migrate());
 			}
 #endif
 			return host;

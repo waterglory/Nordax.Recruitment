@@ -5,7 +5,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.DbContexts
 {
 	public class CustomerDbContext : DbContext
 	{
-		public CustomerDbContext(DbContextOptions options) : base(options) { }
+		public CustomerDbContext(DbContextOptions<CustomerDbContext> options) : base(options) { }
 
 		public DbSet<CustomerInfo> CustomerInfos { get; set; }
 	}

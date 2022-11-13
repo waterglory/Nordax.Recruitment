@@ -5,7 +5,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.DbContexts
 {
     public class SubscriptionDbContext : DbContext
     {
-        public SubscriptionDbContext(DbContextOptions options) : base(options)
+        public SubscriptionDbContext(DbContextOptions<SubscriptionDbContext> options) : base(options)
         {
         }
 

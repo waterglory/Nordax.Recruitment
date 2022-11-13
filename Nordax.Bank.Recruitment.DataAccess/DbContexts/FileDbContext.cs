@@ -5,7 +5,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.DbContexts
 {
 	public class FileDbContext : DbContext
 	{
-		public FileDbContext(DbContextOptions options) : base(options) { }
+		public FileDbContext(DbContextOptions<FileDbContext> options) : base(options) { }
 
 		public DbSet<FileRecord> FileRecords { get; set; }
 	}
