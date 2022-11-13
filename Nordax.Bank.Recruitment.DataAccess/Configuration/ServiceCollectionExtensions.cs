@@ -15,6 +15,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.Configuration
 			services.AddDbContext<LoanApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("LoanApplicationConnection")));
 			services.AddDbContext<CustomerDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("CustomerConnection")));
 			services.AddDbContext<FileDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("FileConnection")));
+			services.AddDbContext<OptionDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("OptionConnection")));
 		}
 
         public static void AddDataAccessServices(this IServiceCollection services)
@@ -29,6 +30,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.Configuration
 			services.AddScoped<ILoanApplicationRepository, LoanApplicationRepository>();
 			services.AddScoped<ICustomerRepository, CustomerRepository>();
 			services.AddScoped<IFileRepository, FileRepository>();
+			services.AddScoped<IOptionRepository, OptionRepository>();
 		}
 
         private static void AddFactories(this IServiceCollection services)

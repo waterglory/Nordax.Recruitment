@@ -37,7 +37,8 @@ namespace Nordax.Bank.Recruitment
 					scope.ServiceProvider.GetRequiredService<SubscriptionDbContext>(),
 					scope.ServiceProvider.GetRequiredService<LoanApplicationDbContext>(),
 					scope.ServiceProvider.GetRequiredService<CustomerDbContext>(),
-					scope.ServiceProvider.GetRequiredService<FileDbContext>()
+					scope.ServiceProvider.GetRequiredService<FileDbContext>(),
+					scope.ServiceProvider.GetRequiredService<OptionDbContext>()
 				};
 				dbContexts.ForEach(ctx => ctx.Database.Migrate());
 			}
