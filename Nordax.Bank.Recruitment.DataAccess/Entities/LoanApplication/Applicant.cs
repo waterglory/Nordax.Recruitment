@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Nordax.Bank.Recruitment.DataAccess.Entities.LoanApplication
 {
 	public class Applicant
 	{
-		public Guid Id { get; set; }
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)] public Guid Id { get; set; }
 
 		[Required][MaxLength(12)] public string OrganizationNo { get; set; }
 

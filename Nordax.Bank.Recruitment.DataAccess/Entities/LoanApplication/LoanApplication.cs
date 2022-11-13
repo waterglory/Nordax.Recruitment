@@ -2,13 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Nordax.Bank.Recruitment.DataAccess.Entities.LoanApplication
 {
 	[Index(nameof(CaseNo), IsUnique = true)]
 	public class LoanApplication
 	{
-		public Guid Id { get; set; }
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)] public Guid Id { get; set; }
 
 		[Required][MaxLength(20)] public string CaseNo { get; set; }
 

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Nordax.Bank.Recruitment.Shared.Models;
 
-namespace Nordax.Bank.Recruitment.DataAccess.Entities.Subscriber
+namespace Nordax.Bank.Recruitment.DataAccess.Entities.Subscription
 {
     public class Subscription
     {

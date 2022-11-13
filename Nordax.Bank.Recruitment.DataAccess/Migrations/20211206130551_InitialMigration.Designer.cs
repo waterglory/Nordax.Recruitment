@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Nordax.Bank.Recruitment.DataAccess;
+using Nordax.Bank.Recruitment.DataAccess.DbContexts;
 
 namespace Nordax.Bank.Recruitment.DataAccess.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(SubscriptionDbContext))]
     [Migration("20211206130551_InitialMigration")]
     partial class InitialMigration
     {
