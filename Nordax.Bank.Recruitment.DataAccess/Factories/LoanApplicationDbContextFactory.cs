@@ -7,18 +7,8 @@ namespace Nordax.Bank.Recruitment.DataAccess.Factories
 		LoanApplicationDbContext Create();
 	}
 
-	public class LoanApplicationDbContextFactory : ILoanApplicationDbContextFactory
+	public class LoanApplicationDbContextFactory : DbContextFactory<LoanApplicationDbContext>, ILoanApplicationDbContextFactory
 	{
-		private readonly LoanApplicationDbContext _dbContext;
-
-		public LoanApplicationDbContextFactory(LoanApplicationDbContext dbContext)
-		{
-			_dbContext = dbContext;
-		}
-
-		public LoanApplicationDbContext Create()
-		{
-			return _dbContext;
-		}
+		public LoanApplicationDbContextFactory(LoanApplicationDbContext dbContext) : base(dbContext) { }
 	}
 }

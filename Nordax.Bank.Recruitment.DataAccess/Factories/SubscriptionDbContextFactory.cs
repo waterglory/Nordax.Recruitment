@@ -7,18 +7,8 @@ namespace Nordax.Bank.Recruitment.DataAccess.Factories
         SubscriptionDbContext Create();
     }
 
-    public class SubscriptionDbContextFactory : ISubscriptionDbContextFactory
-    {
-        private readonly SubscriptionDbContext _dbContext;
-
-        public SubscriptionDbContextFactory(SubscriptionDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
-        public SubscriptionDbContext Create()
-        {
-            return _dbContext;
-        }
-    }
+    public class SubscriptionDbContextFactory : DbContextFactory<SubscriptionDbContext>, ISubscriptionDbContextFactory
+	{
+		public SubscriptionDbContextFactory(SubscriptionDbContext dbContext) : base(dbContext) { }
+	}
 }

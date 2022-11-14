@@ -37,6 +37,9 @@ namespace Nordax.Bank.Recruitment.DataAccess.Configuration
         {
             services.AddScoped<ISubscriptionDbContextFactory, SubscriptionDbContextFactory>();
 			services.AddScoped<ILoanApplicationDbContextFactory, LoanApplicationDbContextFactory>();
+			services.AddScoped<ICustomerDbContextFactory, CustomerDbContextFactory>();
+			services.AddScoped<IFileDbContextFactory, FileDbContextFactory>();
+			services.AddScoped<IOptionDbContextFactory, OptionDbContextFactory>();
 		}
     }
 }

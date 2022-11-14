@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nordax.Bank.Recruitment.DataAccess.DbContexts;
 
@@ -11,9 +12,10 @@ using Nordax.Bank.Recruitment.DataAccess.DbContexts;
 namespace Nordax.Bank.Recruitment.DataAccess.Migrations.File
 {
     [DbContext(typeof(FileDbContext))]
-    partial class FileDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221114044107_AddFileName")]
+    partial class AddFileName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
