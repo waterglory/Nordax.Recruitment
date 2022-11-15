@@ -13,9 +13,9 @@ namespace Nordax.Bank.Recruitment.DataAccess.Repositories
 {
 	public interface ILoanApplicationRepository
 	{
-		public Task<Guid> SubmitLoanApplication(LoanApplicationModel model);
-		public Task<List<LoanApplicationModel>> GetAllLoanApplications();
-		public Task<DocumentModel> GetDocument(Guid documentId);
+		Task<Guid> SaveLoanApplication(LoanApplicationModel model);
+		Task<List<LoanApplicationModel>> GetAllLoanApplications();
+		Task<DocumentModel> GetDocument(Guid documentId);
 	}
 
 	public class LoanApplicationRepository : ILoanApplicationRepository
@@ -27,10 +27,13 @@ namespace Nordax.Bank.Recruitment.DataAccess.Repositories
 			_dbContext = dbContextFactory.Create();
 		}
 
-		public async Task<Guid> SubmitLoanApplication(LoanApplicationModel model)
+		public async Task<Guid> SaveLoanApplication(LoanApplicationModel model)
 		{
+			if (model == null) throw new ArgumentNullException();
+
 			var newLoanApplication = _dbContext.Add(new LoanApplication(model));
 			await _dbContext.SaveChangesAsync();
+
 			return newLoanApplication.Entity.Id;
 		}
 

@@ -10,7 +10,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.Repositories
 {
 	public interface IOptionRepository
 	{
-		public Task<List<BindingPeriodModel>> GetBindingPeriods();
+		Task<List<BindingPeriodModel>> GetBindingPeriods();
 	}
 
 	public class OptionRepository : IOptionRepository
