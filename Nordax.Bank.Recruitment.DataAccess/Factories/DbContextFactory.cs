@@ -1,22 +1,25 @@
-﻿namespace Nordax.Bank.Recruitment.DataAccess.Factories
+﻿using Microsoft.EntityFrameworkCore;
+using Nordax.Bank.Recruitment.DataAccess.DbContexts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Nordax.Bank.Recruitment.DataAccess.Factories
 {
-    public interface IDbContextFactory
-    {
-        ApplicationDbContext Create();
-    }
+	public abstract class DbContextFactory<TDbContext> where TDbContext : DbContext
+	{
+		protected readonly TDbContext _dbContext;
 
-    public class DbContextFactory : IDbContextFactory
-    {
-        private readonly ApplicationDbContext _dbContext;
+		public DbContextFactory(TDbContext dbContext)
+		{
+			_dbContext = dbContext;
+		}
 
-        public DbContextFactory(ApplicationDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
-        public ApplicationDbContext Create()
-        {
-            return _dbContext;
-        }
-    }
+		public TDbContext Create()
+		{
+			return _dbContext;
+		}
+	}
 }

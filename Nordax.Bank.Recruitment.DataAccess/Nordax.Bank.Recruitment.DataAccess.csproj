@@ -20,4 +20,9 @@
 	  <ProjectReference Include="..\Nordax.Bank.Recruitment.Shared\Nordax.Bank.Recruitment.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Migrations\" />
+	  <Folder Include="Migrations\Option\" />
+	</ItemGroup>
+
 </Project>

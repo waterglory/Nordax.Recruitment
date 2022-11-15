@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Nordax.Bank.Recruitment.DataAccess.Entities;
+using Nordax.Bank.Recruitment.DataAccess.Entities.Subscription;
 
-namespace Nordax.Bank.Recruitment.DataAccess
+namespace Nordax.Bank.Recruitment.DataAccess.DbContexts
 {
-    public class ApplicationDbContext : DbContext
+    public class SubscriptionDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions options) : base(options)
+        public SubscriptionDbContext(DbContextOptions<SubscriptionDbContext> options) : base(options)
         {
         }
 

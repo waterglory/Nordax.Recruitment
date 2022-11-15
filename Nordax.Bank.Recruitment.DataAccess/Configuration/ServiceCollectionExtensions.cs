@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Nordax.Bank.Recruitment.DataAccess.DbContexts;
 using Nordax.Bank.Recruitment.DataAccess.Factories;
 using Nordax.Bank.Recruitment.DataAccess.Repositories;
 
@@ -10,8 +11,12 @@ namespace Nordax.Bank.Recruitment.DataAccess.Configuration
     {
         public static void AddEntityFramework(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-        }
+            services.AddDbContext<SubscriptionDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("SubscriptionConnection")));
+			services.AddDbContext<LoanApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("LoanApplicationConnection")));
+			services.AddDbContext<CustomerDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("CustomerConnection")));
+			services.AddDbContext<FileDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("FileConnection")));
+			services.AddDbContext<OptionDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("OptionConnection")));
+		}
 
         public static void AddDataAccessServices(this IServiceCollection services)
         {
@@ -21,12 +26,20 @@ namespace Nordax.Bank.Recruitment.DataAccess.Configuration
 
         private static void AddRepositories(this IServiceCollection services)
         {
-            services.AddTransient<ISubscriptionRepository, SubscriptionRepository>();
-        }
+            services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+			services.AddScoped<ILoanApplicationRepository, LoanApplicationRepository>();
+			services.AddScoped<ICustomerRepository, CustomerRepository>();
+			services.AddScoped<IFileRepository, FileRepository>();
+			services.AddScoped<IOptionRepository, OptionRepository>();
+		}
 
         private static void AddFactories(this IServiceCollection services)
         {
-            services.AddTransient<IDbContextFactory, DbContextFactory>();
-        }
+            services.AddScoped<ISubscriptionDbContextFactory, SubscriptionDbContextFactory>();
+			services.AddScoped<ILoanApplicationDbContextFactory, LoanApplicationDbContextFactory>();
+			services.AddScoped<ICustomerDbContextFactory, CustomerDbContextFactory>();
+			services.AddScoped<IFileDbContextFactory, FileDbContextFactory>();
+			services.AddScoped<IOptionDbContextFactory, OptionDbContextFactory>();
+		}
     }
 }

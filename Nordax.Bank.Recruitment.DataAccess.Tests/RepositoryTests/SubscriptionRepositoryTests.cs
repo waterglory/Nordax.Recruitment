@@ -1,12 +1,13 @@
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Nordax.Bank.Recruitment.DataAccess.Entities;
+using Nordax.Bank.Recruitment.DataAccess.DbContexts;
+using Nordax.Bank.Recruitment.DataAccess.Entities.Subscription;
 using Nordax.Bank.Recruitment.DataAccess.Exceptions;
 using Nordax.Bank.Recruitment.DataAccess.Factories;
 using Nordax.Bank.Recruitment.DataAccess.Repositories;
 using Nordax.Bank.Recruitment.DataAccess.Tests.Configuration;
+using System.Threading.Tasks;
 
 namespace Nordax.Bank.Recruitment.DataAccess.Tests.RepositoryTests
 {
@@ -14,11 +15,11 @@ namespace Nordax.Bank.Recruitment.DataAccess.Tests.RepositoryTests
     public class SubscriptionRepositoryTests
     {
         private readonly ISubscriptionRepository _subscriptionRepository;
-        private readonly ApplicationDbContext _testDbContext;
+        private readonly SubscriptionDbContext _testDbContext;
 
         public SubscriptionRepositoryTests()
         {
-            var dbContextFactoryMock = new Mock<IDbContextFactory>();
+            var dbContextFactoryMock = new Mock<ISubscriptionDbContextFactory>();
 
             _testDbContext = EfConfig.CreateInMemoryTestDbContext();
             dbContextFactoryMock.Setup(d => d.Create()).Returns(EfConfig.CreateInMemoryApplicationDbContext());

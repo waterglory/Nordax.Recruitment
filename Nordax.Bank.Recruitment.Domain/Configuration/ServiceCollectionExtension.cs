@@ -12,7 +12,7 @@ namespace Nordax.Bank.Recruitment.Domain.Configuration
 
         private static void AddServices(this IServiceCollection services)
         {
-            services.AddTransient<ISubscriptionService, SubscriptionService>();
+            services.AddScoped<ISubscriptionService, SubscriptionService>();
         }
     }
 }
