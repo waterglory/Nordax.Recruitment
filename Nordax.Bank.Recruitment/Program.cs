@@ -32,15 +32,14 @@ namespace Nordax.Bank.Recruitment
 #if DEBUG
 			using (var scope = host.Services.CreateScope())
 			{
-				var dbContexts = new List<DbContext>
+				new List<DbContext>
 				{
 					scope.ServiceProvider.GetRequiredService<SubscriptionDbContext>(),
 					scope.ServiceProvider.GetRequiredService<LoanApplicationDbContext>(),
 					scope.ServiceProvider.GetRequiredService<CustomerDbContext>(),
 					scope.ServiceProvider.GetRequiredService<FileDbContext>(),
 					scope.ServiceProvider.GetRequiredService<OptionDbContext>()
-				};
-				dbContexts.ForEach(ctx => ctx.Database.Migrate());
+				}.ForEach(ctx => ctx.Database.Migrate());
 			}
 #endif
 			return host;
