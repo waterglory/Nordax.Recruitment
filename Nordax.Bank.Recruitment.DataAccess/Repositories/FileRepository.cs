@@ -4,6 +4,7 @@ using Nordax.Bank.Recruitment.DataAccess.Entities.File;
 using Nordax.Bank.Recruitment.DataAccess.Exceptions;
 using Nordax.Bank.Recruitment.DataAccess.Factories;
 using Nordax.Bank.Recruitment.Shared.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace Nordax.Bank.Recruitment.DataAccess.Repositories
@@ -32,12 +33,15 @@ namespace Nordax.Bank.Recruitment.DataAccess.Repositories
 
 		public async Task SaveFile(FileModel model, bool force = false)
 		{
+			if (model == null) throw new ArgumentNullException();
+
 			var existingFile = await _dbContext.FileRecords.FirstOrDefaultAsync(f => f.FileRef == model.FileRef);
 			if (existingFile == null)
 				_dbContext.Add(new FileRecord(model));
 			else if (force)
 				existingFile.FromDomainModel(model);
 			else throw new FileRefNotEmptyException();
+
 			await _dbContext.SaveChangesAsync();
 		}
 	}
