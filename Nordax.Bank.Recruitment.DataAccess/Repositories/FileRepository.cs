@@ -40,7 +40,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.Repositories
 				_dbContext.Add(new FileRecord(model));
 			else if (force)
 				existingFile.FromDomainModel(model);
-			else throw new FileRefNotEmptyException();
+			else throw new FileRefNotEmptyException(model.FileRef);
 
 			await _dbContext.SaveChangesAsync();
 		}
