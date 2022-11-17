@@ -1,6 +1,7 @@
 ﻿using Nordax.Bank.Recruitment.DataAccess.Repositories;
 using Nordax.Bank.Recruitment.Domain.Providers;
 using Nordax.Bank.Recruitment.Domain.Validators;
+using Nordax.Bank.Recruitment.Shared.Common.Constants;
 using Nordax.Bank.Recruitment.Shared.Exceptions;
 using Nordax.Bank.Recruitment.Shared.Models;
 using Nordax.Bank.Recruitment.Shared.Models.LoanApplication;
@@ -54,6 +55,13 @@ namespace Nordax.Bank.Recruitment.Domain.Services
 				throw new ValidationException(reason);
 		}
 
+		private async Task CheckOngoingApplication(string organizationNo)
+		{
+			var ongoingApplication = await _loanApplicationRepository.GetOngoingLoanApplication(organizationNo, LoanApplicationStep.Verification);
+			if (ongoingApplication != null)
+				throw new CustomerOngoingLoanApplicationException(ongoingApplication.CaseNo);
+		}
+
 		private Task UpdateCustomer(ApplicantModel applicant) =>
 			_customerProvider.MergeCustomer(new CustomerModel
 			{
@@ -67,12 +75,19 @@ namespace Nordax.Bank.Recruitment.Domain.Services
 				IsPoliticallyExposed = applicant.IsPoliticallyExposed,
 			});
 
+		/// <summary>
+		/// Register a new loan application.
+		/// </summary>
+		/// <param name="model">The submitted loan application data.</param>
+		/// <returns>A string representing the case number for the loan.</returns>
 		public async Task<string> SubmitLoanApplication(LoanApplicationModel model)
 		{
 			Validate(model);
+			await CheckOngoingApplication(model.Applicant.OrganizationNo);
 
 			model.Id = Guid.Empty;
 			model.CaseNo = GenerateCaseNo();
+			model.CurrentStep = LoanApplicationStep.Verification;
 			await _loanApplicationRepository.SaveLoanApplication(model);
 
 			await UpdateCustomer(model.Applicant);

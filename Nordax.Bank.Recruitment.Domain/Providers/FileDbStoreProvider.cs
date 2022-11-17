@@ -23,7 +23,7 @@ namespace Nordax.Bank.Recruitment.Domain.Providers
 		public Task<FileModel> GetFile(string fileRef) =>
 			_fileRepository.GetFile(fileRef);
 
-		public async Task<string> SaveFile(string documentType, string fileFullName, byte[] content)
+		public async Task<string> SaveFile(string documentType, string fileFullName, string contentType, byte[] content)
 		{
 			if (string.IsNullOrWhiteSpace(documentType))
 				throw new ArgumentException(nameof(documentType));
@@ -37,6 +37,7 @@ namespace Nordax.Bank.Recruitment.Domain.Providers
 			{
 				FileRef = $"{documentType}/{Guid.NewGuid()}",
 				FileName = fileName,
+				ContentType = contentType,
 				Content = content,
 				FileType = fileExt
 			};

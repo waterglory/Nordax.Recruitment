@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Nordax.Bank.Recruitment.DataAccess.Configuration;
 using Nordax.Bank.Recruitment.Domain.Configuration;
+using Nordax.Bank.Recruitment.Helpers;
 using Nordax.Bank.Recruitment.Shared.Common;
 
 namespace Nordax.Bank.Recruitment.Configuration
@@ -16,6 +17,13 @@ namespace Nordax.Bank.Recruitment.Configuration
 
             services.AddDataAccessServices();
             services.AddDomainServices();
-        }
-    }
+
+            services.AddHelpers();
+		}
+
+		private static void AddHelpers(this IServiceCollection services)
+		{
+			services.AddSingleton<IFileUploadHelper, FileUploadHelper>();
+		}
+	}
 }

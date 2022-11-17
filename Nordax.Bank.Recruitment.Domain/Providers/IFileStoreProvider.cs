@@ -10,6 +10,6 @@ namespace Nordax.Bank.Recruitment.Domain.Providers
 	public interface IFileStoreProvider
 	{
 		Task<FileModel> GetFile(string fileRef);
-		Task<string> SaveFile(string documentType, string fileFullName, byte[] content);
+		Task<string> SaveFile(string documentType, string fileFullName, string contentType, byte[] content);
 	}
 }

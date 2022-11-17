@@ -17,6 +17,8 @@ namespace Nordax.Bank.Recruitment.DataAccess.Entities.File
 
 		[Required][MaxLength(100)] public string FileName { get; set; }
 
+		[Required][MaxLength(100)] public string ContentType { get; set; }
+
 		[Required] public byte[] Content { get; set; }
 
 		[Required][MaxLength(20)] public string FileType { get; set; }
@@ -26,6 +28,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.Entities.File
 			{
 				FileRef = FileRef,
 				FileName = FileName,
+				ContentType = ContentType,
 				Content = Content,
 				FileType = FileType
 			};
@@ -33,6 +36,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.Entities.File
 		public void FromDomainModel(FileModel model)
 		{
 			FileName = model.FileName;
+			ContentType = model.ContentType;
 			Content = model.Content;
 			FileType = model.FileType;
 		}

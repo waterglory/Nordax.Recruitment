@@ -14,6 +14,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.Repositories
 	public interface ILoanApplicationRepository
 	{
 		Task<Guid> SaveLoanApplication(LoanApplicationModel model);
+		Task<LoanApplicationModel> GetOngoingLoanApplication(string organizationNo, params string[] ongoingSteps);
 		Task<List<LoanApplicationModel>> GetAllLoanApplications();
 		Task<DocumentModel> GetDocument(Guid documentId);
 	}
@@ -51,5 +52,10 @@ namespace Nordax.Bank.Recruitment.DataAccess.Repositories
 			if (document == null) throw new LoanDocumentNotFoundException();
 			return document.ToDomainModel();
 		}
+
+		public async Task<LoanApplicationModel> GetOngoingLoanApplication(string organizationNo, params string[] ongoingSteps) =>
+			(await _dbContext.LoanApplications.FirstOrDefaultAsync(la =>
+				la.Applicant.OrganizationNo == organizationNo
+				&& ongoingSteps.Contains(la.CurrentStep)))?.ToDomainModel();
 	}
 }
