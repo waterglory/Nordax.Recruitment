@@ -11,6 +11,8 @@ using Nordax.Bank.Recruitment.Domain.Providers;
 using Nordax.Bank.Recruitment.Domain.Services;
 using Nordax.Bank.Recruitment.Helpers;
 using Nordax.Bank.Recruitment.Models.LoanApplication;
+using Nordax.Bank.Recruitment.Shared.Exceptions;
+using Nordax.Bank.Recruitment.Shared.Models.LoanApplication;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Nordax.Bank.Recruitment.Controllers
@@ -74,11 +76,50 @@ namespace Nordax.Bank.Recruitment.Controllers
 		}
 
 		[HttpPost]
-		[SwaggerResponse(StatusCodes.Status200OK, "Loan Application registered successfully")]
-		public async Task<IActionResult> RegisterLoanApplication([Required][FromBody] RegisterLoanApplicationRequest request)
+		[SwaggerResponse(StatusCodes.Status200OK, "Loan Application registered successfully", typeof(RegisterLoanApplicationResponse))]
+		[SwaggerResponse(StatusCodes.Status409Conflict, "Customer has ongoing application", typeof(RegisterLoanApplicationResponse))]
+		[ProducesResponseType(typeof(RegisterLoanApplicationResponse), StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(RegisterLoanApplicationResponse), StatusCodes.Status409Conflict)]
+		public async Task<IActionResult> SubmitLoanApplication([Required][FromBody] RegisterLoanApplicationRequest request)
 		{
-			//TODO: Store Loan Application
-			return Ok();
+			try
+			{
+				var caseNo = await _loanApplicationService.SubmitLoanApplication(new LoanApplicationModel
+				{
+					Applicant = new ApplicantModel
+					{
+						OrganizationNo = request.ApplicantOrganizationNo,
+						FirstName = request.ApplicantFirstName,
+						Surname = request.ApplicantSurname,
+						Email = request.ApplicantEmail,
+						PhoneNo = request.ApplicantPhoneNo,
+						Address = request.ApplicantAddress,
+						IncomeLevel = request.ApplicantIncomeLevel,
+						IsPoliticallyExposed = request.ApplicantIsPoliticallyExposed
+					},
+					Loan = new LoanModel
+					{
+						Amount = request.LoanAmount,
+						BindingPeriod = request.LoanBindingPeriod,
+						InterestRate = request.LoanInterestRate,
+					},
+					Documents = request.Documents.Select(d => new DocumentModel
+					{
+						DocumentType = d.DocumentType,
+						FileRef = d.FileRef,
+					}).ToList()
+				});
+				return Ok(new RegisterLoanApplicationResponse { CaseNo = caseNo });
+			}
+			catch (CustomerOngoingLoanApplicationException ex)
+			{
+				return Conflict(new RegisterLoanApplicationResponse { CaseNo = ex.Message });
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex);
+				return StatusCode(StatusCodes.Status500InternalServerError);
+			}
 		}
 
 		[HttpGet("attachment/{documentId}")]
