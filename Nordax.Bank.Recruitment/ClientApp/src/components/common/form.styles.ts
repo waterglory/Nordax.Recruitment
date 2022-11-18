@@ -19,7 +19,14 @@ export const useFormStyles = () => {
         minWidth: "280px",
     }
 
+    const labelStyle: React.CSSProperties = {
+        textAlign: "left"
+    };
+
     return {
-        buttonStyle, inputStyle, selectStyle
+        buttonStyle,
+        inputStyle,
+        selectStyle,
+        labelStyle
     };
 };

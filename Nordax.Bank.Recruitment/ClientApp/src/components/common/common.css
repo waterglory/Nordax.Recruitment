@@ -1,3 +1,7 @@
 :root {
     --nordax_red: #f4144a;
 }
+
+.nordax_subtitle {
+    color: gray;
+}
