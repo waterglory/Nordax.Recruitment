@@ -1,10 +1,10 @@
-import React from "react";
-import {useSurveyPageStyles} from "./surveyPage.styles";
-import './surveyPageAnimation.css';
+import * as React from "react";
+import useTransitionPageStyles from "./transitionPage.styles";
+import './transitionAnimation.css';
 import {Col, Row} from "reactstrap";
 
-export const SurveyPage = (props: React.PropsWithChildren<{index: number, currentIndex: number}>) => {
-    const {containerStyle} = useSurveyPageStyles();
+export const TransitionPage = (props: React.PropsWithChildren<{index: number, currentIndex: number}>) => {
+    const { containerStyle } = useTransitionPageStyles();
 
     const relevantStyle = props.currentIndex < props.index ? "hiddenBotStyle" : props.currentIndex > props.index ? "hiddenTopStyle" : "visibleStyle";
 

@@ -1,11 +1,11 @@
 import React, {useState} from "react";
-import {SurveyPage} from "./SurveyPage";
+import {TransitionPage} from "../common/transition/TransitionPage";
 import {Input} from "reactstrap";
 import {NewSubscriberRequest} from "../../models/newSubscriberRequest";
 import {Button} from '../common/button/Button';
 import {WebApiClient} from "../../common/webApiClient";
 import '../common/button/Button.css'
-import {useSurveyPageStyles} from "./surveyPage.styles";
+import {useFormStyles} from "../common/form.styles";
 
 
 export const Signup = () => {
@@ -47,52 +47,52 @@ export const Signup = () => {
         return /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(email)
     }
 
-    const {buttonStyle, inputStyle} = useSurveyPageStyles();
+    const {buttonStyle, inputStyle} = useFormStyles();
 
     const pages = [
-        <SurveyPage index={0} currentIndex={pageIndex} key={0}>
+        <TransitionPage index={0} currentIndex={pageIndex} key={0}>
             <div>
                 <h5>Nordax™ the bank of banks.</h5>
                 <p style={{color: "gray"}}>Want to receive news regarding <br/> the best loans?</p>
                 <p>Submit your details below and we'll be in touch.</p>
                 <Button style={buttonStyle} onClick={() => setNext()}>Continue</Button>
             </div>
-        </SurveyPage>,
-        <SurveyPage index={1} currentIndex={pageIndex} key={1}>
+        </TransitionPage>,
+        <TransitionPage index={1} currentIndex={pageIndex} key={1}>
             <div>
                 <p>What's your name?</p>
                 <p style={{color: "gray"}}>Nicknames are welcomed, obvs.</p>
                 <Input style={inputStyle} type={"text"} name={"name"} placeholder={"Tap to start writing.."} value={formData.name} onChange={handleChange}/>
                 <Button  style={{...{marginTop: "18px"}, ...buttonStyle}} onClick={() => setNext()} disabled={!formData.name || formData.name.length === 0}>Next</Button>
             </div>
-        </SurveyPage>,
-        <SurveyPage index={2} currentIndex={pageIndex} key={2}>
+        </TransitionPage>,
+        <TransitionPage index={2} currentIndex={pageIndex} key={2}>
             <div>
                 <p>What's your email?</p>
                 <p style={{color: "gray"}}>We promise, we'll send you fun stuff only.</p>
                 <Input style={inputStyle} type={"email"} name={"email"} placeholder={"Tap to start writing.."} value={formData.email} onChange={handleChange}/>
                 <Button style={{...{marginTop: "18px"}, ...buttonStyle}} onClick={() => {if(validateEmail(formData.email)) setNext()}} disabled={(!formData.email || formData.email.length === 0)}>Next</Button>
             </div>
-        </SurveyPage>,
-        <SurveyPage index={3} currentIndex={pageIndex} key={3}>
+        </TransitionPage>,
+        <TransitionPage index={3} currentIndex={pageIndex} key={3}>
             <div>
                 <p>By entering your information, you agree to let Nordax store your contact information and update you with news and announcements.</p>
                 <p style={{color: "gray"}}>Are you ready to join the conversation?</p>
                 <Button style={buttonStyle} onClick={() => onSubmit()}>I'm in!</Button>
             </div>
-        </SurveyPage>,
-        <SurveyPage index={4} currentIndex={pageIndex} key={4}>
+        </TransitionPage>,
+        <TransitionPage index={4} currentIndex={pageIndex} key={4}>
             <div>
                 <p><b>We saved you</b> and you are now part of the world of Nordax.<br/>
                 An bank of banks.</p>
             </div>
-        </SurveyPage>,
-        <SurveyPage index={5} currentIndex={pageIndex} key={5}>
+        </TransitionPage>,
+        <TransitionPage index={5} currentIndex={pageIndex} key={5}>
             <div>
                 <p>Something went wrong with your submission.</p>
                 <p style={{color: "red"}}>{submitError}</p>
             </div>
-        </SurveyPage>
+        </TransitionPage>
     ];
 
     return (
