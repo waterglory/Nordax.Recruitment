@@ -8,6 +8,8 @@ namespace Nordax.Bank.Recruitment.Shared.Models.LoanApplication
 
 		public decimal Amount { get; set; }
 
+		public int PaymentPeriod { get; set; }
+
 		public int BindingPeriod { get; set; }
 
 		public decimal InterestRate { get; set; }

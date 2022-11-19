@@ -100,6 +100,7 @@ namespace Nordax.Bank.Recruitment.Controllers
 					Loan = new LoanModel
 					{
 						Amount = request.LoanAmount,
+						PaymentPeriod = request.LoanPaymentPeriod,
 						BindingPeriod = request.LoanBindingPeriod,
 						InterestRate = request.LoanInterestRate,
 					},
@@ -171,6 +172,7 @@ namespace Nordax.Bank.Recruitment.Controllers
 					ApplicantOrganizationNo = la.Applicant.OrganizationNo,
 					ApplicantFullName = $"{la.Applicant.FirstName} {la.Applicant.Surname}",
 					LoanAmount = la.Loan.Amount,
+					LoanPaymentPeriod = la.Loan.PaymentPeriod,
 					LoanBindingPeriod = la.Loan.BindingPeriod,
 					LoanInterestRate = la.Loan.InterestRate,
 					Documents = la.Documents.Select(d => new LoanApplicationDocumentResponse

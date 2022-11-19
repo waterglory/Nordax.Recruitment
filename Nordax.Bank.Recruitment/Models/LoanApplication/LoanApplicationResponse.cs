@@ -26,6 +26,8 @@ namespace Nordax.Bank.Recruitment.Models.LoanApplication
 
 		public decimal LoanAmount { get; set; }
 
+		public int LoanPaymentPeriod { get; set; }
+
 		public int LoanBindingPeriod { get; set; }
 
 		public decimal LoanInterestRate { get; set; }

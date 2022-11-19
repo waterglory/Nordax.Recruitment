@@ -1,18 +1,15 @@
 import React, { useState } from "react";
-import { TransitionPage } from "../common/transition/TransitionPage";
+import { RegisterLoanApplicationRequest } from "../../models/registerLoanApplicationRequest";
 import { Button } from '../common/button/Button';
-import '../common/button/Button.css'
-import { useFormStyles } from "../common/form.styles";
+import '../common/button/Button.css';
 import { useNavigations } from "../common/common.styles";
-import {
-    RegisterLoanApplicationRequest,
-    RegisterLoanApplicationDocumentRequest
-} from "../../models/registerLoanApplicationRequest";
+import { useFormStyles } from "../common/form.styles";
+import { TransitionPage } from "../common/transition/TransitionPage";
 import Loan from "./Loan";
+import { isOfType } from "../../common/classUtil";
 
 const LoanApplication = () => {
-    const [pageIndex, setPageIndex] = useState(0);
-    const [loanApplication, setLoanApplication] = useState({
+    const initLoanApplication = (): RegisterLoanApplicationRequest => ({
         applicantOrganizationNo: "",
         applicantFirstName: "",
         applicantSurname: "",
@@ -22,11 +19,15 @@ const LoanApplication = () => {
         applicantIsPoliticallyExposed: false,
 
         loanAmount: 0,
+        loanPaymentPeriod: 0,
         loanBindingPeriod: 0,
         loanInterestRate: 0,
 
         documents: []
-    } as RegisterLoanApplicationRequest);
+    })
+
+    const [pageIndex, setPageIndex] = useState(0);
+    const [loanApplication, setLoanApplication] = useState(initLoanApplication());
 
     const setNext = () => {
         if (pageIndex < pages.length - 1)
@@ -38,15 +39,27 @@ const LoanApplication = () => {
             setPageIndex(pageIndex - 1)
     }
 
+    const retry = () => {
+        setLoanApplication(initLoanApplication());
+        setPageIndex(0);
+    }
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let val: string | number | boolean;
-        if (e.target.type === "number")
+        if (isOfType(loanApplication, e.target.name, "number"))
             val = e.target.value ? Number.parseFloat(e.target.value) : 0;
-        else if (e.target.type === "checkbox")
+        else if (isOfType(loanApplication, e.target.name, "boolean"))
             val = e.target.value ? true : false;
         else
             val = e.target.value;
         setLoanApplication({ ...loanApplication, [e.target.name]: val });
+    }
+
+    const handleMultiUpdates = (...updates: [string, any][]) => {
+        let newState = { ...loanApplication };
+        for (const update of updates)
+            newState[update[0]] = update[1];
+        setLoanApplication(newState);
     }
 
     const { buttonStyle } = useFormStyles();
@@ -59,7 +72,7 @@ const LoanApplication = () => {
             <p>Submit your details below and we'll be in touch.</p>
             <Button style={buttonStyle} onClick={() => setNext()}>Continue</Button>
         </div>,
-        <Loan data={loanApplication} onChange={handleChange} nextForm="Next" next={setNext} />
+        <Loan data={loanApplication} onChange={handleChange} onMultiUpdates={handleMultiUpdates} nextForm="Next" next={setNext} />
     ];
 
     return (
@@ -76,7 +89,7 @@ const LoanApplication = () => {
                 : null}
             {pageIndex === pages.length - 1 ?
                 <div style={navigationDivStyle}>
-                    <Button style={navigationButtonStyle} onClick={() => setPageIndex(0)}>Retry</Button>
+                    <Button style={navigationButtonStyle} onClick={() => retry()}>Retry</Button>
                 </div>
                 : null}
         </div>

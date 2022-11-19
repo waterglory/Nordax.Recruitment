@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { Button } from '../common/button/Button';
 import '../common/button/Button.css'
 import '../common/common.css';
+import { Button } from '../common/button/Button';
 import { useFormStyles } from "../common/form.styles";
-import { Input, Form, FormGroup, Label, Col } from "reactstrap";
-import { useNavigations } from "../common/common.styles";
+import { Input, Form, FormGroup, Label, Col, Fade } from "reactstrap";
+import { nameof } from "../../common/classUtil";
+import BindingPeriod from "../../models/bindingPeriod";
+import { WebApiClient } from "../../common/webApiClient";
 
 export interface LoanData {
     loanAmount: number;
+    loanPaymentPeriod: number;
     loanBindingPeriod: number;
     loanInterestRate: number
 }
@@ -17,43 +20,129 @@ const { inputStyle, labelStyle } = useFormStyles();
 const Loan = (props: React.PropsWithChildren<{
     data: LoanData,
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    onMultiUpdates: (...updates: [string, any][]) => void,
     nextForm: string,
     next: () => void
 }>) => {
-    const [interestRate, setInterestRate] = useState(0);
+    const [bindingPeriodOptions, setBindingPeriodOptions] = useState<Array<BindingPeriod>>([]);
+    const [loadError, setLoadError] = useState<null | string>(null);
+    const [simulation, setSimulation] = useState<{ firstMonth: number, nextYear: number }>();
+
+    const labelCol = 5;
+
+    React.useEffect(() => {
+        WebApiClient().get<Array<BindingPeriod>>('api/options/binding-periods')
+            .then((res) => {
+                setBindingPeriodOptions(res);
+            }).catch(e => {
+                setLoadError(e.status + " " + e.statusText);
+                e.json().then((json: any) => {
+                    setLoadError(e.status + " " + e.statusText + ": " + json);
+                });
+            });
+    }, []);
+
+    const calculateSimulation = (data: LoanData) => {
+        // Assumed that 360 yearly days are used
+
+        const principal = data.loanAmount / data.loanPaymentPeriod;
+        const dailyRate = data.loanInterestRate / 36000;
+        const monthlyRate = Math.pow((1 + dailyRate), 30);
+        const firstMonthInterest = monthlyRate * data.loanAmount - data.loanAmount;
+
+        const nextYearLeftAmount = data.loanAmount - 12 * principal;
+        const nextYearInterest = monthlyRate * nextYearLeftAmount - nextYearLeftAmount;
+
+        setSimulation({
+            firstMonth: Math.floor(principal + firstMonthInterest),
+            nextYear: Math.floor(principal + nextYearInterest)
+        });
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        calculateSimulation({ ...props.data, [e.target.name]: Number.parseFloat(e.target.value) });
+        props.onChange(e);
+    }
+
+    const handleBindingPeriodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const bindingPeriod = Number.parseFloat(e.target.value);
+        let matchedOption = bindingPeriodOptions.find(o => o.length === bindingPeriod);
+        let interestRate = matchedOption ? matchedOption.interestRate : 0;
+        props.onMultiUpdates(
+            [nameof<LoanData>("loanInterestRate"), interestRate],
+            [nameof<LoanData>("loanBindingPeriod"), bindingPeriod]);
+
+        const newLoan = { ...props.data };
+        newLoan.loanBindingPeriod = bindingPeriod;
+        newLoan.loanInterestRate = interestRate;
+        calculateSimulation(newLoan);
+    }
 
     const { buttonStyle } = useFormStyles();
 
-    return (
+    return loadError ? (
+        <div>
+            <p>Something went wrong with during form loading.</p>
+            <p style={{ color: "red" }}>{loadError}</p>
+        </div>
+    ) : (
         <Form>
             <h4>Loan</h4>
             <p className="nordax_subtitle">Fill in the amount and we will calculate it for you.</p>
             <FormGroup row>
-                <Label for="loanAmount" sm={4} style={labelStyle}>Amount</Label>
-                <Col sm={8}>
-                    <Input style={inputStyle} type="number" name="loanAmount" placeholder="Tap to start writing.."
-                        value={props.data.loanAmount} onChange={props.onChange} />
+                <Label for="loanAmount" sm={labelCol} style={labelStyle}>Amount</Label>
+                <Col sm={12 - labelCol}>
+                    <Input style={inputStyle} type="number" name="loanAmount"
+                        value={props.data.loanAmount} onChange={handleChange} />
                 </Col>
             </FormGroup>
             <FormGroup row>
-                <Label for="loanBindingPeriod" sm={4} style={labelStyle}>Binding period</Label>
-                <Col sm={8}>
-                    <Input style={inputStyle} type="select" name="loanBindingPeriod"
-                        value={props.data.loanBindingPeriod} onChange={props.onChange}>
-                        <option value="0">---</option>
-                        <option value="3">3 months (1%)</option>
-                        <option value="6">6 months (1.5%)</option>
-                    </Input>
+                <Label for="loanPaymentPeriod" sm={labelCol} style={labelStyle}>Payment period (mo.)</Label>
+                <Col sm={12 - labelCol}>
+                    <Input style={inputStyle} type="number" name="loanPaymentPeriod"
+                        value={props.data.loanPaymentPeriod} onChange={handleChange} />
                 </Col>
             </FormGroup>
+            {bindingPeriodOptions.length > 0 &&
+                <FormGroup row>
+                    <Label for="loanBindingPeriod" sm={labelCol} style={labelStyle}>Binding period (mo.)</Label>
+                    <Col sm={12 - labelCol}>
+                        <Input style={inputStyle} type="select" name="loanBindingPeriod"
+                            value={props.data.loanBindingPeriod} onChange={handleBindingPeriodChange}>
+                            <option value="0">---</option>
+                            {bindingPeriodOptions.map(o =>
+                                <option key={o.length} value={o.length}>
+                                    {`${o.length} month${o.length > 1 ? 's' : ''} (${o.interestRate}%)`}
+                                </option>)}
+                        </Input>
+                    </Col>
+                </FormGroup>}
             <FormGroup row>
-                <Label for="loanInterestRate" sm={4} style={labelStyle}>Interest rate</Label>
-                <Col sm={8}>
-                    <Input style={inputStyle} value={`${interestRate * 100} %`} disabled />
+                <Label for="loanInterestRate" sm={labelCol} style={labelStyle}>Interest rate</Label>
+                <Col sm={12 - labelCol}>
+                    <Input style={inputStyle} value={`${props.data.loanInterestRate} %`} disabled />
                 </Col>
             </FormGroup>
-            {props.data.loanAmount > 0 && props.data.loanBindingPeriod > 0 &&
-                <Button style={buttonStyle} onClick={props.next}>{props.nextForm}</Button>}
+            {props.data.loanAmount > 0 && props.data.loanPaymentPeriod > 0 && props.data.loanBindingPeriod > 0 &&
+                <Fade style={{ transition: 'opacity 0.25s linear' }}>
+                    <FormGroup row>
+                        <Label sm={labelCol} style={labelStyle}>First payment</Label>
+                        <Col sm={12 - labelCol}>
+                            <Input style={inputStyle} value={simulation?.firstMonth} disabled />
+                        </Col>
+                    </FormGroup>
+                    {props.data.loanPaymentPeriod > 12 &&
+
+                        <Fade style={{ transition: 'opacity 0.25s linear' }}>
+                            <FormGroup row>
+                                <Label sm={labelCol} style={labelStyle}>Next year payment</Label>
+                                <Col sm={12 - labelCol}>
+                                    <Input style={inputStyle} value={simulation?.nextYear} disabled />
+                                </Col>
+                            </FormGroup>
+                        </Fade>}
+                    <Button style={buttonStyle} onClick={props.next}>{props.nextForm}</Button>
+                </Fade>}
         </Form>
     );
 }
