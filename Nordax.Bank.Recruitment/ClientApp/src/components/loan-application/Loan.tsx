@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { forwardRef, Ref, useImperativeHandle, useState } from 'react';
 import { Col, Fade, Form, FormGroup, Input, Label } from "reactstrap";
 import { nameof } from "../../common/classUtil";
 import { IHttpClient } from '../../common/httpClient';
@@ -8,6 +8,7 @@ import '../common/button/Button.css';
 import '../common/common.css';
 import { useFormStyles } from "../common/form.styles";
 import LoanApplicationEvents from './loanApplicationEvents';
+import Resettable from "./resettable";
 
 export interface LoanData {
     loanAmount: number;
@@ -16,11 +17,11 @@ export interface LoanData {
     loanInterestRate: number;
 }
 
-const Loan = (props: React.PropsWithChildren<{
+const Loan = forwardRef((props: React.PropsWithChildren<{
     data: LoanData,
     events: LoanApplicationEvents,
     apiClient: IHttpClient
-}>) => {
+}>, ref: Ref<Resettable>) => {
     const [bindingPeriodOptions, setBindingPeriodOptions] = useState<Array<BindingPeriod>>([]);
     const [loadError, setLoadError] = useState<null | string>(null);
     const [simulation, setSimulation] = useState<{ firstMonth: number, nextYear: number }>();
@@ -36,6 +37,7 @@ const Loan = (props: React.PropsWithChildren<{
                 e.json().then((json: any) => {
                     setLoadError(e.status + " " + e.statusText + ": " + json);
                 });
+                props.events.onEndOfFlow();
             });
     }, []);
 
@@ -74,6 +76,12 @@ const Loan = (props: React.PropsWithChildren<{
         newLoan.loanInterestRate = interestRate;
         calculateSimulation(newLoan);
     }
+
+    useImperativeHandle(ref, () => ({
+        reset: () => {
+            setLoadError(null);
+        }
+    }));
 
     const { inputStyle, labelStyle, buttonStyle } = useFormStyles();
 
@@ -142,6 +150,6 @@ const Loan = (props: React.PropsWithChildren<{
                 </Fade>}
         </Form>
     );
-}
+})
 
 export default Loan;

@@ -40,9 +40,9 @@ namespace Nordax.Bank.Recruitment.DataAccess.Entities.LoanApplication
 				CaseNo = CaseNo,
 				CurrentStep = CurrentStep,
 				CreatedDate = CreatedDate,
-				Applicant = Applicant.ToDomainModel(),
-				Loan = Loan.ToDomainModel(),
-				Documents = Documents.Select(d => d.ToDomainModel()).ToList()
+				Applicant = Applicant?.ToDomainModel(),
+				Loan = Loan?.ToDomainModel(),
+				Documents = Documents?.Select(d => d.ToDomainModel()).ToList()
 			};
 
 		public void FromDomainModel(LoanApplicationModel model)

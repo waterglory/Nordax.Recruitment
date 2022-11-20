@@ -1,5 +1,5 @@
 import Personnummer from "personnummer";
-import React, { useState } from 'react';
+import React, { forwardRef, Ref, useImperativeHandle, useState } from 'react';
 import { FormFeedback, Input } from "reactstrap";
 import { IHttpClient } from "../../common/httpClient";
 import GetCustomerDataResponse from "../../models/getCustomerDataResponse";
@@ -8,17 +8,16 @@ import '../common/button/Button.css';
 import '../common/common.css';
 import { useFormStyles } from "../common/form.styles";
 import LoanApplicationEvents from "./loanApplicationEvents";
+import Resettable from "./resettable";
 
-const OrganizationNo = (props: React.PropsWithChildren<{
+const OrganizationNo = forwardRef((props: React.PropsWithChildren<{
     applicantOrganizationNo: string,
     events: LoanApplicationEvents,
     apiClient: IHttpClient
-}>) => {
+}>, ref: Ref<Resettable>) => {
     const [validOrgNo, setValidOrgNo] = useState(true);
     const [existingCaseNo, setExistingCaseNo] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
-
-    const labelCol = 5;
 
     const handleOrganizationNoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let isValid = true;
@@ -48,6 +47,7 @@ const OrganizationNo = (props: React.PropsWithChildren<{
                         e.json().then((json: any) => {
                             setExistingCaseNo(json.caseNo);
                         });
+                        props.events.onEndOfFlow();
                         break;
                     case 404:
                         //do nothing, customer data simply not exists
@@ -58,6 +58,7 @@ const OrganizationNo = (props: React.PropsWithChildren<{
                         e.json().then((json: any) => {
                             setError(e.status + " " + e.statusText + ": " + json);
                         });
+                        props.events.onEndOfFlow();
                         break;
                 }
             });
@@ -70,6 +71,14 @@ const OrganizationNo = (props: React.PropsWithChildren<{
             <h5>Case no.: {existingCaseNo}</h5>
         </div>
     )
+
+    useImperativeHandle(ref, () => ({
+        reset: () => {
+            setValidOrgNo(true);
+            setExistingCaseNo(null);
+            setError(null);
+        }
+    }));
 
     const { inputStyle, buttonStyle } = useFormStyles();
 
@@ -91,5 +100,5 @@ const OrganizationNo = (props: React.PropsWithChildren<{
             <p style={{ color: "red" }}>{error}</p>
         </div>
     ) : (existingCaseNo ? renderExistingCaseNo() : renderOrganizationNo());
-}
+})
 export default OrganizationNo;

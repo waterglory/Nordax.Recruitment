@@ -20,8 +20,6 @@ const Applicant = (props: React.PropsWithChildren<{
     data: ApplicantData,
     events: LoanApplicationEvents
 }>) => {
-    const labelCol = 5;
-
     const formIsValid = () =>
         props.data.applicantFirstName
         && props.data.applicantSurname
@@ -41,7 +39,7 @@ const Applicant = (props: React.PropsWithChildren<{
     const validateEmail = () =>
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(props.data.applicantEmail);
 
-    const { inputStyle, labelStyle, buttonStyle } = useFormStyles();
+    const { labelStyle, buttonStyle } = useFormStyles();
 
     return (
         <Form>

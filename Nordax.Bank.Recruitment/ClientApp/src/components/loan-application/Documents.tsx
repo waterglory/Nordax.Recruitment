@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { forwardRef, Ref, useImperativeHandle, useState } from 'react';
 import { Card, CardTitle, Form, FormFeedback, FormText, Input } from "reactstrap";
 import { IHttpClient } from '../../common/httpClient';
 import { Button } from '../common/button/Button';
@@ -6,6 +6,7 @@ import '../common/button/Button.css';
 import '../common/common.css';
 import { useFormStyles } from "../common/form.styles";
 import LoanApplicationEvents from './loanApplicationEvents';
+import Resettable from "./resettable";
 
 interface Document {
     documentType: string,
@@ -14,11 +15,11 @@ interface Document {
     elementRef: React.RefObject<HTMLInputElement>
 }
 
-const Documents = (props: React.PropsWithChildren<{
+const Documents = forwardRef((props: React.PropsWithChildren<{
     events: LoanApplicationEvents,
     onDocumentUpload: (documentType: string, fileRef: string) => void,
     apiClient: IHttpClient
-}>) => {
+}>, ref: Ref<Resettable>) => {
     const [hasAllDocuments, setHasAllDocuments] = useState(false);
     const [documentsError, setDocumentsError] = useState<any>({});
 
@@ -91,6 +92,17 @@ const Documents = (props: React.PropsWithChildren<{
         })).then(() => props.events.next(e));
     }
 
+    useImperativeHandle(ref, () => ({
+        reset: () => {
+            setHasAllDocuments(false);
+            setDocumentsError({});
+            documents.forEach(d => {
+                if (d.elementRef.current)
+                    d.elementRef.current.value = "";
+            });
+        }
+    }));
+
     return (
         <Form>
             <h5>Documents</h5>
@@ -108,5 +120,5 @@ const Documents = (props: React.PropsWithChildren<{
                 disabled={!hasAllDocuments}>{props.events.nextForm}</Button>
         </Form>
     );
-}
+})
 export default Documents;

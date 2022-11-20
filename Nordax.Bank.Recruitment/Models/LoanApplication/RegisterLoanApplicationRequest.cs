@@ -22,9 +22,9 @@ namespace Nordax.Bank.Recruitment.Models.LoanApplication
 
 		[Required] public string ApplicantEmail { get; set; }
 
-		[Required] public string ApplicantAddress { get; set; }
+		public string ApplicantAddress { get; set; }
 
-		[Required] public string ApplicantIncomeLevel { get; set; }
+		public string ApplicantIncomeLevel { get; set; }
 
 		public bool ApplicantIsPoliticallyExposed { get; set; }
 

@@ -72,7 +72,7 @@ namespace Nordax.Bank.Recruitment.Domain.Services
 
 		public async Task CheckOngoingApplication(string organizationNo)
 		{
-			var ongoingApplication = await _loanApplicationRepository.GetOngoingLoanApplication(organizationNo, LoanApplicationStep.Verification);
+			var ongoingApplication = await _loanApplicationRepository.GetOngoingLoanApplication(organizationNo.CleanUpOrganizationNo(), LoanApplicationStep.Verification);
 			if (ongoingApplication != null)
 				throw new CustomerOngoingLoanApplicationException(ongoingApplication.CaseNo);
 		}

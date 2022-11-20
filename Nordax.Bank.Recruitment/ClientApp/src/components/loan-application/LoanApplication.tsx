@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import { isOfType } from "../../common/classUtil";
+import { WebApiClient } from "../../common/webApiClient";
 import { RegisterLoanApplicationRequest } from "../../models/registerLoanApplicationRequest";
 import { Button } from '../common/button/Button';
 import '../common/button/Button.css';
 import { useNavigations } from "../common/common.styles";
 import { useFormStyles } from "../common/form.styles";
 import { TransitionPage } from "../common/transition/TransitionPage";
-import { isOfType } from "../../common/classUtil";
-import { WebApiClient } from "../../common/webApiClient";
 import LoanApplicationEvents from "./loanApplicationEvents";
-import Loan from "./Loan";
-import OrganizationNo from "./OrganizationNo";
+import Resettable from "./resettable";
 import Applicant from "./Applicant";
 import Documents from "./Documents";
+import Loan from "./Loan";
+import OrganizationNo from "./OrganizationNo";
+import Submit from "./Submit";
 
 const LoanApplication = () => {
     const initLoanApplication = (): RegisterLoanApplicationRequest => ({
@@ -34,7 +36,14 @@ const LoanApplication = () => {
 
     const [pageIndex, setPageIndex] = useState(0);
     const [loanApplication, setLoanApplication] = useState(initLoanApplication());
+    const [canRetry, setCanRetry] = useState(false);
     const apiClient = WebApiClient();
+
+    const loanRef = useRef<Resettable>(null);
+    const organizationNoRef = useRef<Resettable>(null);
+    const documentsRef = useRef<Resettable>(null);
+    const submitRef = useRef<Resettable>(null);
+    const resettableRefs = [loanRef, organizationNoRef, documentsRef, submitRef];
 
     const setNext = (e: Event) => {
         if (e && e.preventDefault) e.preventDefault();
@@ -48,7 +57,9 @@ const LoanApplication = () => {
     }
 
     const retry = () => {
+        setCanRetry(false);
         setLoanApplication(initLoanApplication());
+        resettableRefs.forEach(r => r.current?.reset());
         setPageIndex(0);
     }
 
@@ -84,7 +95,8 @@ const LoanApplication = () => {
         onChange: handleChange,
         onMultiUpdates: handleMultiUpdates,
         nextForm: "Next",
-        next: setNext
+        next: setNext,
+        onEndOfFlow: () => setCanRetry(true)
     };
 
     const pages = [
@@ -94,10 +106,11 @@ const LoanApplication = () => {
             <p>Submit your details below and we'll be in touch.</p>
             <Button style={buttonStyle} onClick={setNext}>Continue</Button>
         </div>,
-        <Documents events={loanApplicationEvents} onDocumentUpload={onDocumentUpload} apiClient={apiClient} />,
+        <Loan data={loanApplication} events={loanApplicationEvents} apiClient={apiClient} ref={loanRef} />,
+        <OrganizationNo applicantOrganizationNo={loanApplication.applicantOrganizationNo} events={loanApplicationEvents} apiClient={apiClient} ref={organizationNoRef} />,
         <Applicant data={loanApplication} events={loanApplicationEvents} />,
-        <OrganizationNo applicantOrganizationNo={loanApplication.applicantOrganizationNo} events={loanApplicationEvents} apiClient={apiClient} />,
-        <Loan data={loanApplication} events={loanApplicationEvents} apiClient={apiClient} />
+        <Documents events={loanApplicationEvents} onDocumentUpload={onDocumentUpload} apiClient={apiClient} ref={documentsRef} />,
+        <Submit data={loanApplication} apiClient={apiClient} ref={submitRef} />
     ];
 
     return (
@@ -107,12 +120,12 @@ const LoanApplication = () => {
                     {p}
                 </TransitionPage>
             ))}
-            {pageIndex > 0 && pageIndex < pages.length - 1 ?
+            {pageIndex > 0 && pageIndex < pages.length - 1 && !canRetry ?
                 <div style={navigationDivStyle}>
                     <Button style={navigationButtonStyle} onClick={() => setPrevious()}>Go Back</Button>
                 </div>
                 : null}
-            {pageIndex === pages.length - 1 ?
+            {pageIndex === pages.length - 1 || canRetry ?
                 <div style={navigationDivStyle}>
                     <Button style={navigationButtonStyle} onClick={() => retry()}>Retry</Button>
                 </div>
