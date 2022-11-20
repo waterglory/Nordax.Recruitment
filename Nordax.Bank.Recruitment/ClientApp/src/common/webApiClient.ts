@@ -1,4 +1,4 @@
-﻿import {IHttpClient} from "./httpClient";
+﻿import { IHttpClient } from "./httpClient";
 
 export function WebApiClient(): IHttpClient {
     const webApiClient: IHttpClient = {
@@ -12,9 +12,9 @@ export function WebApiClient(): IHttpClient {
         },
 
         async post<T>(
-        url: string,
-        data?: any,
-        appendHeaders?: Record<string, string>
+            url: string,
+            data?: any,
+            appendHeaders?: Record<string, string>
         ): Promise<T> {
             const response = await fetch(url, {
                 headers: getHeaders(appendHeaders || {}),
@@ -54,7 +54,26 @@ export function WebApiClient(): IHttpClient {
             if (!response.ok) throw response;
 
             return parseResponse<T>(response);
-        }
+        },
+
+        async postFile<T>(
+            url: string,
+            content: File,
+            appendHeaders?: Record<string, string>
+        ): Promise<T> {
+            const form = new FormData();
+            form.append("file", content);
+            const response = await fetch(url, {
+                headers: appendHeaders,
+                method: "post",
+                credentials: "same-origin",
+                body: form
+            });
+
+            if (!response.ok) throw response;
+
+            return parseResponse<T>(response);
+        },
     };
 
 

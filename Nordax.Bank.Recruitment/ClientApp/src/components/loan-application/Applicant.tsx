@@ -29,10 +29,10 @@ const Applicant = (props: React.PropsWithChildren<{
         && props.data.applicantEmail;
 
     const incomeLevelOptions: { value: string, text: string }[] = [
-        { value: "35000", text: "0 - 35000" },
-        { value: "70000", text: "35001 - 70000" },
-        { value: "120000", text: "70001 - 120000" },
-        { value: "-1", text: "> 120000" }
+        { value: "35000", text: "0 - 35,000 kr" },
+        { value: "70000", text: "35,001 - 70,000 kr" },
+        { value: "120000", text: "70,001 - 120,000 kr" },
+        { value: "-1", text: "> 120,000 kr" }
     ];
 
     const validatePhone = () =>

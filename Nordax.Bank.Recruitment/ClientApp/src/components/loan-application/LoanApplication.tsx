@@ -5,11 +5,13 @@ import '../common/button/Button.css';
 import { useNavigations } from "../common/common.styles";
 import { useFormStyles } from "../common/form.styles";
 import { TransitionPage } from "../common/transition/TransitionPage";
+import { isOfType } from "../../common/classUtil";
+import { WebApiClient } from "../../common/webApiClient";
+import LoanApplicationEvents from "./loanApplicationEvents";
 import Loan from "./Loan";
 import OrganizationNo from "./OrganizationNo";
 import Applicant from "./Applicant";
-import { isOfType } from "../../common/classUtil";
-import LoanApplicationEvents from "./loanApplicationEvents";
+import Documents from "./Documents";
 
 const LoanApplication = () => {
     const initLoanApplication = (): RegisterLoanApplicationRequest => ({
@@ -32,6 +34,7 @@ const LoanApplication = () => {
 
     const [pageIndex, setPageIndex] = useState(0);
     const [loanApplication, setLoanApplication] = useState(initLoanApplication());
+    const apiClient = WebApiClient();
 
     const setNext = (e: Event) => {
         if (e && e.preventDefault) e.preventDefault();
@@ -67,6 +70,14 @@ const LoanApplication = () => {
         setLoanApplication(newState);
     }
 
+    const onDocumentUpload = (documentType: string, fileRef: string) => {
+        // No need to use setLoanApplication, since it will never re-render the component.
+        const docs = loanApplication.documents;
+        const existingDocumentIndex = docs.findIndex(d => d.documentType == documentType);
+        if (existingDocumentIndex > -1) docs.splice(existingDocumentIndex, 1);
+        docs.push({ documentType, fileRef });
+    }
+
     const { buttonStyle } = useFormStyles();
     const { navigationButtonStyle, navigationDivStyle } = useNavigations();
     const loanApplicationEvents: LoanApplicationEvents = {
@@ -83,9 +94,10 @@ const LoanApplication = () => {
             <p>Submit your details below and we'll be in touch.</p>
             <Button style={buttonStyle} onClick={setNext}>Continue</Button>
         </div>,
+        <Documents events={loanApplicationEvents} onDocumentUpload={onDocumentUpload} apiClient={apiClient} />,
         <Applicant data={loanApplication} events={loanApplicationEvents} />,
-        <OrganizationNo applicantOrganizationNo={loanApplication.applicantOrganizationNo} events={loanApplicationEvents} />,
-        <Loan data={loanApplication} events={loanApplicationEvents} />
+        <OrganizationNo applicantOrganizationNo={loanApplication.applicantOrganizationNo} events={loanApplicationEvents} apiClient={apiClient} />,
+        <Loan data={loanApplication} events={loanApplicationEvents} apiClient={apiClient} />
     ];
 
     return (

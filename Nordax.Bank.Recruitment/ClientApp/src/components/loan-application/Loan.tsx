@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Col, Fade, Form, FormGroup, Input, Label } from "reactstrap";
 import { nameof } from "../../common/classUtil";
-import { WebApiClient } from "../../common/webApiClient";
+import { IHttpClient } from '../../common/httpClient';
 import BindingPeriod from "../../models/bindingPeriod";
 import { Button } from '../common/button/Button';
 import '../common/button/Button.css';
@@ -18,7 +18,8 @@ export interface LoanData {
 
 const Loan = (props: React.PropsWithChildren<{
     data: LoanData,
-    events: LoanApplicationEvents
+    events: LoanApplicationEvents,
+    apiClient: IHttpClient
 }>) => {
     const [bindingPeriodOptions, setBindingPeriodOptions] = useState<Array<BindingPeriod>>([]);
     const [loadError, setLoadError] = useState<null | string>(null);
@@ -27,7 +28,7 @@ const Loan = (props: React.PropsWithChildren<{
     const labelCol = 5;
 
     React.useEffect(() => {
-        WebApiClient().get<Array<BindingPeriod>>('api/options/binding-periods')
+        props.apiClient.get<Array<BindingPeriod>>('api/options/binding-periods')
             .then((res) => {
                 setBindingPeriodOptions(res);
             }).catch(e => {

@@ -1,7 +1,7 @@
 import Personnummer from "personnummer";
 import React, { useState } from 'react';
 import { FormFeedback, Input } from "reactstrap";
-import { WebApiClient } from "../../common/webApiClient";
+import { IHttpClient } from "../../common/httpClient";
 import GetCustomerDataResponse from "../../models/getCustomerDataResponse";
 import { Button } from '../common/button/Button';
 import '../common/button/Button.css';
@@ -11,7 +11,8 @@ import LoanApplicationEvents from "./loanApplicationEvents";
 
 const OrganizationNo = (props: React.PropsWithChildren<{
     applicantOrganizationNo: string,
-    events: LoanApplicationEvents
+    events: LoanApplicationEvents,
+    apiClient: IHttpClient
 }>) => {
     const [validOrgNo, setValidOrgNo] = useState(true);
     const [existingCaseNo, setExistingCaseNo] = useState<string | null>(null);
@@ -29,7 +30,7 @@ const OrganizationNo = (props: React.PropsWithChildren<{
     };
 
     const signWithBankId = (e: Event) => {
-        WebApiClient().get<GetCustomerDataResponse>(`api/loan-application/customer/${props.applicantOrganizationNo}`)
+        props.apiClient.get<GetCustomerDataResponse>(`api/loan-application/customer/${props.applicantOrganizationNo}`)
             .then((res) => {
                 props.events.onMultiUpdates(
                     ["applicantFirstName", res.firstName],

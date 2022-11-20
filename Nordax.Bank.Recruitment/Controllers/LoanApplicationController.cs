@@ -45,7 +45,7 @@ namespace Nordax.Bank.Recruitment.Controllers
 		[ProducesResponseType(typeof(FileResponse), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(FileResponse), StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status409Conflict)]
-		public async Task<IActionResult> UploadFile(string documentType, IFormFile file)
+		public async Task<IActionResult> UploadFile([FromForm] IFormFile file, [FromRoute]string documentType)
 		{
 			try
 			{
@@ -59,7 +59,7 @@ namespace Nordax.Bank.Recruitment.Controllers
 					content = stream.ToArray();
 				}
 
-				var fileExtension = Path.GetExtension(file.FileName);
+				var fileExtension = Path.GetExtension(file.FileName).TrimStart('.');
 				if (!_fileUploadHelper.VerifySignature(fileExtension, content))
 					return BadRequest(new FileResponse { ErrorMessage = "File signature does not match the extension." });
 
