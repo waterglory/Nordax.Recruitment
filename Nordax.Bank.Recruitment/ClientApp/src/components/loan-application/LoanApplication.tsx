@@ -6,7 +6,10 @@ import { useNavigations } from "../common/common.styles";
 import { useFormStyles } from "../common/form.styles";
 import { TransitionPage } from "../common/transition/TransitionPage";
 import Loan from "./Loan";
+import OrganizationNo from "./OrganizationNo";
+import Applicant from "./Applicant";
 import { isOfType } from "../../common/classUtil";
+import LoanApplicationEvents from "./loanApplicationEvents";
 
 const LoanApplication = () => {
     const initLoanApplication = (): RegisterLoanApplicationRequest => ({
@@ -16,6 +19,7 @@ const LoanApplication = () => {
         applicantPhoneNo: "",
         applicantEmail: "",
         applicantAddress: "",
+        applicantIncomeLevel: "",
         applicantIsPoliticallyExposed: false,
 
         loanAmount: 0,
@@ -29,7 +33,8 @@ const LoanApplication = () => {
     const [pageIndex, setPageIndex] = useState(0);
     const [loanApplication, setLoanApplication] = useState(initLoanApplication());
 
-    const setNext = () => {
+    const setNext = (e: Event) => {
+        if (e && e.preventDefault) e.preventDefault();
         if (pageIndex < pages.length - 1)
             setPageIndex(pageIndex + 1)
     }
@@ -49,7 +54,7 @@ const LoanApplication = () => {
         if (isOfType(loanApplication, e.target.name, "number"))
             val = e.target.value ? Number.parseFloat(e.target.value) : 0;
         else if (isOfType(loanApplication, e.target.name, "boolean"))
-            val = e.target.value ? true : false;
+            val = e.target.checked;
         else
             val = e.target.value;
         setLoanApplication({ ...loanApplication, [e.target.name]: val });
@@ -64,15 +69,23 @@ const LoanApplication = () => {
 
     const { buttonStyle } = useFormStyles();
     const { navigationButtonStyle, navigationDivStyle } = useNavigations();
+    const loanApplicationEvents: LoanApplicationEvents = {
+        onChange: handleChange,
+        onMultiUpdates: handleMultiUpdates,
+        nextForm: "Next",
+        next: setNext
+    };
 
     const pages = [
         <div>
             <h5>Nordax&trade; the bank of banks.</h5>
             <p className="nordax_subtitle">Want to receive news regarding <br /> the best loans?</p>
             <p>Submit your details below and we'll be in touch.</p>
-            <Button style={buttonStyle} onClick={() => setNext()}>Continue</Button>
+            <Button style={buttonStyle} onClick={setNext}>Continue</Button>
         </div>,
-        <Loan data={loanApplication} onChange={handleChange} onMultiUpdates={handleMultiUpdates} nextForm="Next" next={setNext} />
+        <Applicant data={loanApplication} events={loanApplicationEvents} />,
+        <OrganizationNo applicantOrganizationNo={loanApplication.applicantOrganizationNo} events={loanApplicationEvents} />,
+        <Loan data={loanApplication} events={loanApplicationEvents} />
     ];
 
     return (
@@ -82,7 +95,7 @@ const LoanApplication = () => {
                     {p}
                 </TransitionPage>
             ))}
-            {pageIndex > 0 && pageIndex < pages.length - 2 ?
+            {pageIndex > 0 && pageIndex < pages.length - 1 ?
                 <div style={navigationDivStyle}>
                     <Button style={navigationButtonStyle} onClick={() => setPrevious()}>Go Back</Button>
                 </div>

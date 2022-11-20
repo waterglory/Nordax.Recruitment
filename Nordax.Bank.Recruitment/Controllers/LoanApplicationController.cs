@@ -22,15 +22,18 @@ namespace Nordax.Bank.Recruitment.Controllers
 	public class LoanApplicationController : ControllerBase
 	{
 		private ILoanApplicationService _loanApplicationService;
+		private ICustomerProvider _customerProvider;
 		private IFileStoreProvider _fileStoreProvider;
 		private IFileUploadHelper _fileUploadHelper;
 
 		public LoanApplicationController(
 			ILoanApplicationService loanApplicationService,
+			ICustomerProvider customerProvider,
 			IFileStoreProvider fileStoreProvider,
 			IFileUploadHelper fileUploadHelper)
 		{
 			_loanApplicationService = loanApplicationService;
+			_customerProvider = customerProvider;
 			_fileStoreProvider = fileStoreProvider;
 			_fileUploadHelper = fileUploadHelper;
 		}
@@ -67,6 +70,47 @@ namespace Nordax.Bank.Recruitment.Controllers
 			catch (FileRefNotEmptyException ex)
 			{
 				return Conflict($"File ref '{ex.Message}' is already in use.");
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex);
+				return StatusCode(StatusCodes.Status500InternalServerError);
+			}
+		}
+
+
+		[HttpGet("customer/{organizationNo}")]
+		[SwaggerResponse(StatusCodes.Status200OK, "Customer data fetched successfully", typeof(FileContentResult))]
+		[SwaggerResponse(StatusCodes.Status409Conflict, "Customer has ongoing application", typeof(RegisterLoanApplicationResponse))]
+		[SwaggerResponse(StatusCodes.Status404NotFound, "Customer data not found")]
+		[ProducesResponseType(typeof(GetCustomerDataResponse), StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(RegisterLoanApplicationResponse), StatusCodes.Status409Conflict)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<IActionResult> GetCustomerData(string organizationNo)
+		{
+			try
+			{
+				await _loanApplicationService.CheckOngoingApplication(organizationNo);
+				var customer = await _customerProvider.GetCustomer(organizationNo);
+
+				return Ok(new GetCustomerDataResponse
+				{
+					FirstName = customer.FirstName,
+					Surname = customer.Surname,
+					Email = customer.Email,
+					PhoneNo = customer.PhoneNo,
+					Address = customer.Address,
+					IncomeLevel = customer.IncomeLevel,
+					IsPoliticallyExposed = customer.IsPoliticallyExposed
+				});
+			}
+			catch (CustomerOngoingLoanApplicationException ex)
+			{
+				return Conflict(new RegisterLoanApplicationResponse { CaseNo = ex.Message });
+			}
+			catch (NotFoundException)
+			{
+				return NotFound("Customer data not found.");
 			}
 			catch (Exception ex)
 			{
@@ -128,7 +172,7 @@ namespace Nordax.Bank.Recruitment.Controllers
 		[SwaggerResponse(StatusCodes.Status404NotFound, "Loan Application Document not found")]
 		[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<IActionResult> GetLoanApplication(Guid documentId)
+		public async Task<IActionResult> GetLoanApplicationDocument(Guid documentId)
 		{
 			try
 			{

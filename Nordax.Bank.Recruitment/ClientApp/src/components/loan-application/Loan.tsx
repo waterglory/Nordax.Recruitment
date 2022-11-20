@@ -1,28 +1,24 @@
 import React, { useState } from 'react';
-import '../common/button/Button.css'
-import '../common/common.css';
-import { Button } from '../common/button/Button';
-import { useFormStyles } from "../common/form.styles";
-import { Input, Form, FormGroup, Label, Col, Fade } from "reactstrap";
+import { Col, Fade, Form, FormGroup, Input, Label } from "reactstrap";
 import { nameof } from "../../common/classUtil";
-import BindingPeriod from "../../models/bindingPeriod";
 import { WebApiClient } from "../../common/webApiClient";
+import BindingPeriod from "../../models/bindingPeriod";
+import { Button } from '../common/button/Button';
+import '../common/button/Button.css';
+import '../common/common.css';
+import { useFormStyles } from "../common/form.styles";
+import LoanApplicationEvents from './loanApplicationEvents';
 
 export interface LoanData {
     loanAmount: number;
     loanPaymentPeriod: number;
     loanBindingPeriod: number;
-    loanInterestRate: number
+    loanInterestRate: number;
 }
-
-const { inputStyle, labelStyle } = useFormStyles();
 
 const Loan = (props: React.PropsWithChildren<{
     data: LoanData,
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
-    onMultiUpdates: (...updates: [string, any][]) => void,
-    nextForm: string,
-    next: () => void
+    events: LoanApplicationEvents
 }>) => {
     const [bindingPeriodOptions, setBindingPeriodOptions] = useState<Array<BindingPeriod>>([]);
     const [loadError, setLoadError] = useState<null | string>(null);
@@ -61,14 +57,14 @@ const Loan = (props: React.PropsWithChildren<{
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         calculateSimulation({ ...props.data, [e.target.name]: Number.parseFloat(e.target.value) });
-        props.onChange(e);
+        props.events.onChange(e);
     }
 
     const handleBindingPeriodChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const bindingPeriod = Number.parseFloat(e.target.value);
         let matchedOption = bindingPeriodOptions.find(o => o.length === bindingPeriod);
         let interestRate = matchedOption ? matchedOption.interestRate : 0;
-        props.onMultiUpdates(
+        props.events.onMultiUpdates(
             [nameof<LoanData>("loanInterestRate"), interestRate],
             [nameof<LoanData>("loanBindingPeriod"), bindingPeriod]);
 
@@ -78,7 +74,7 @@ const Loan = (props: React.PropsWithChildren<{
         calculateSimulation(newLoan);
     }
 
-    const { buttonStyle } = useFormStyles();
+    const { inputStyle, labelStyle, buttonStyle } = useFormStyles();
 
     return loadError ? (
         <div>
@@ -141,7 +137,7 @@ const Loan = (props: React.PropsWithChildren<{
                                 </Col>
                             </FormGroup>
                         </Fade>}
-                    <Button style={buttonStyle} onClick={props.next}>{props.nextForm}</Button>
+                    <Button style={buttonStyle} onClick={props.events.next}>{props.events.nextForm}</Button>
                 </Fade>}
         </Form>
     );

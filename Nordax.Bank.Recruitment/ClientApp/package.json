@@ -17,6 +17,7 @@
     "jquery": "^3.5.1",
     "merge": "^1.2.1",
     "oidc-client": "^1.10.1",
+    "personnummer": "^3.1.4",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",

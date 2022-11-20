@@ -7,6 +7,7 @@ export interface RegisterLoanApplicationRequest extends hasIndexer {
     applicantPhoneNo: string;
     applicantEmail: string;
     applicantAddress: string;
+    applicantIncomeLevel: string;
     applicantIsPoliticallyExposed: boolean;
 
     loanAmount: number;
