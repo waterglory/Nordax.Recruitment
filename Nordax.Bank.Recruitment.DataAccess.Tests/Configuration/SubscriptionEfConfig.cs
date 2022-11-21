@@ -8,9 +8,9 @@ namespace Nordax.Bank.Recruitment.DataAccess.Tests.Configuration
     ///     one to create test data and verify persisted data produced by the application db logic.
     ///     As desribed here https://docs.microsoft.com/en-us/ef/core/miscellaneous/testing/in-memory
     /// </summary>
-    public static class EfConfig
+    public static class SubscriptionEfConfig
     {
-        private static readonly DbContextOptions<SubscriptionDbContext> DbContextOptions =
+        private static readonly DbContextOptions<SubscriptionDbContext> SubscriptionDbContextOptions =
             new DbContextOptionsBuilder<SubscriptionDbContext>().UseInMemoryDatabase("InMemoryDb").Options;
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.Tests.Configuration
         /// <returns>ApplicationDbContext</returns>
         public static SubscriptionDbContext CreateInMemoryTestDbContext()
         {
-            var dbContext = new SubscriptionDbContext(DbContextOptions);
+            var dbContext = new SubscriptionDbContext(SubscriptionDbContextOptions);
             dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
             return dbContext;
@@ -29,9 +29,9 @@ namespace Nordax.Bank.Recruitment.DataAccess.Tests.Configuration
         ///     Use this context to be passed on to a repository and/or used for application code.
         /// </summary>
         /// <returns>ApplicationDbContext</returns>
-        public static SubscriptionDbContext CreateInMemoryApplicationDbContext()
+        public static SubscriptionDbContext CreateInMemorySubscriptionDbContext()
         {
-            return new(DbContextOptions);
+            return new(SubscriptionDbContextOptions);
         }
     }
 }
