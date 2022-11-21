@@ -50,6 +50,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.Entities.Customer
 			Email = model.Email;
 			Address = model.Address;
 			IncomeLevel = model.IncomeLevel;
+			IsPoliticallyExposed = model.IsPoliticallyExposed;
 		}
 	}
 }

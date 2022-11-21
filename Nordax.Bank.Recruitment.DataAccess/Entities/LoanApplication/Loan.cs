@@ -19,6 +19,8 @@ namespace Nordax.Bank.Recruitment.DataAccess.Entities.LoanApplication
 
 		[Precision(14, 2)] public decimal Amount { get; set; }
 
+		[Precision(4)] public int PaymentPeriod { get; set; }
+
 		[Precision(3)] public int BindingPeriod { get; set; }
 
 		[Precision(8, 5)] public decimal InterestRate { get; set; }
@@ -28,6 +30,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.Entities.LoanApplication
 			{
 				Id = Id,
 				Amount = Amount,
+				PaymentPeriod = PaymentPeriod,
 				BindingPeriod = BindingPeriod,
 				InterestRate = InterestRate
 			};
@@ -35,6 +38,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.Entities.LoanApplication
 		public void FromDomainModel(LoanModel model)
 		{
 			Amount = model.Amount;
+			PaymentPeriod = model.PaymentPeriod;
 			BindingPeriod = model.BindingPeriod;
 			InterestRate = model.InterestRate;
 		}

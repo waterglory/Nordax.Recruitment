@@ -16,4 +16,10 @@
     delete<T>(
         url: string
     ): Promise<T>;
+
+    postFile<T>(
+        url: string,
+        content?: File,
+        appendHeaders?: Record<string, string>
+    ): Promise<T>;
 }

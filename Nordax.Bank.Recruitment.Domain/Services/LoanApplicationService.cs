@@ -1,6 +1,7 @@
 ﻿using Nordax.Bank.Recruitment.DataAccess.Repositories;
 using Nordax.Bank.Recruitment.Domain.Providers;
 using Nordax.Bank.Recruitment.Domain.Validators;
+using Nordax.Bank.Recruitment.Shared.Common;
 using Nordax.Bank.Recruitment.Shared.Common.Constants;
 using Nordax.Bank.Recruitment.Shared.Exceptions;
 using Nordax.Bank.Recruitment.Shared.Models;
@@ -14,6 +15,7 @@ namespace Nordax.Bank.Recruitment.Domain.Services
 {
 	public interface ILoanApplicationService
 	{
+		Task CheckOngoingApplication(string organizationNo);
 		Task<string> SubmitLoanApplication(LoanApplicationModel model);
 		Task<List<LoanApplicationModel>> GetAllLoanApplications();
 		Task<FileModel> GetDocumentContent(Guid documentId);
@@ -55,13 +57,6 @@ namespace Nordax.Bank.Recruitment.Domain.Services
 				throw new ValidationException(reason);
 		}
 
-		private async Task CheckOngoingApplication(string organizationNo)
-		{
-			var ongoingApplication = await _loanApplicationRepository.GetOngoingLoanApplication(organizationNo, LoanApplicationStep.Verification);
-			if (ongoingApplication != null)
-				throw new CustomerOngoingLoanApplicationException(ongoingApplication.CaseNo);
-		}
-
 		private Task UpdateCustomer(ApplicantModel applicant) =>
 			_customerProvider.MergeCustomer(new CustomerModel
 			{
@@ -75,6 +70,13 @@ namespace Nordax.Bank.Recruitment.Domain.Services
 				IsPoliticallyExposed = applicant.IsPoliticallyExposed,
 			});
 
+		public async Task CheckOngoingApplication(string organizationNo)
+		{
+			var ongoingApplication = await _loanApplicationRepository.GetOngoingLoanApplication(organizationNo.CleanUpOrganizationNo(), LoanApplicationStep.Verification);
+			if (ongoingApplication != null)
+				throw new CustomerOngoingLoanApplicationException(ongoingApplication.CaseNo);
+		}
+
 		/// <summary>
 		/// Register a new loan application.
 		/// </summary>
@@ -82,6 +84,7 @@ namespace Nordax.Bank.Recruitment.Domain.Services
 		/// <returns>A string representing the case number for the loan.</returns>
 		public async Task<string> SubmitLoanApplication(LoanApplicationModel model)
 		{
+			model.CleanUpOrganizationNo();
 			Validate(model);
 			await CheckOngoingApplication(model.Applicant.OrganizationNo);
 

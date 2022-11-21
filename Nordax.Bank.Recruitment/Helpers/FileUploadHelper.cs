@@ -57,7 +57,7 @@ namespace Nordax.Bank.Recruitment.Helpers
 
 			var fileExtension = Path.GetExtension(formFile.FileName).TrimStart('.');
 			var supportedExts = _fileSettings.SupportedExtensions;
-			if (supportedExts.All(e => !e.Equals(fileExtension, System.StringComparison.InvariantCultureIgnoreCase)))
+			if (supportedExts.All(e => !e.Equals(fileExtension, StringComparison.InvariantCultureIgnoreCase)))
 			{
 				reason = $"Unsupported file type {fileExtension}, please provide a file within the following types: {_flattenedSupportedExtensions}.";
 				return false;
@@ -70,6 +70,6 @@ namespace Nordax.Bank.Recruitment.Helpers
 		public bool VerifySignature(string fileExtension, byte[] content) =>
 			_inspector.Inspect(content)
 				.ByFileExtension()
-				.Any(e => e.Extension == fileExtension);
+				.Any(e => e.Extension.Equals(fileExtension, StringComparison.InvariantCultureIgnoreCase));
 	}
 }

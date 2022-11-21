@@ -3,5 +3,7 @@ import './Button.css';
 
 export const Button = (props: React.PropsWithChildren<any>) => {
 
-    return <button className={`nordax_button red`} {...props}>{props.children}</button>;
+    const { className, ...propsWithoutClass } = props;
+
+    return <button className={`nordax_button red ${props.className == null ? "" : props.className}`} {...propsWithoutClass}>{props.children}</button>;
 }

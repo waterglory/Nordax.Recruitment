@@ -19,7 +19,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.Entities.LoanApplication
 
 		[Required][MaxLength(20)] public string DocumentType { get; set; }
 
-		[Required][MaxLength(50)] public string FileRef { get; set; }
+		[Required][MaxLength(100)] public string FileRef { get; set; }
 
 		public DocumentModel ToDomainModel() =>
 			new()

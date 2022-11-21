@@ -18,7 +18,8 @@ export const Home = () => {
                         <p>A Bank of banks  </p>
                         <div style={{ marginTop: '25px' }}>
                             <Button style={buttonStyle} onClick={() => window.location.href = "/loan-application"}>Try Nordax</Button>
-                            <Button style={buttonStyle} onClick={() => window.location.href = "/signup"}>Subscribe</Button>
+                            <Button style={buttonStyle} onClick={() => window.location.href = "/overview"}>Overview</Button>
+                            <Button style={buttonStyle} onClick={() => window.location.href = "/signup"} className="mt-2">Subscribe</Button>
                         </div>
                         <div style={{ margin: 'auto', marginTop: '25px', width: '80%' }}>
                             <a href={"https://twitter.com/nordaxb"} style={linkStyle}><img src={"icons/twitter.svg"} alt={"twitter"} style={iconStyle}/></a>

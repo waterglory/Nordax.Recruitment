@@ -22,17 +22,19 @@ namespace Nordax.Bank.Recruitment.Models.LoanApplication
 
 		[Required] public string ApplicantEmail { get; set; }
 
-		[Required] public string ApplicantAddress { get; set; }
+		public string ApplicantAddress { get; set; }
 
-		[Required] public string ApplicantIncomeLevel { get; set; }
+		public string ApplicantIncomeLevel { get; set; }
 
-		[Required] public bool ApplicantIsPoliticallyExposed { get; set; }
+		public bool ApplicantIsPoliticallyExposed { get; set; }
 
-		[Required] public decimal LoanAmount { get; set; }
+		public decimal LoanAmount { get; set; }
 
-		[Required] public int LoanBindingPeriod { get; set; }
+		public int LoanPaymentPeriod { get; set; }
 
-		[Required] public decimal LoanInterestRate { get; set; }
+		public int LoanBindingPeriod { get; set; }
+
+		public decimal LoanInterestRate { get; set; }
 
 		[Required] public List<RegisterLoanApplicationDocumentRequest> Documents { get; set; }
 	}

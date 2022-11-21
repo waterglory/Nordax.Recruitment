@@ -32,7 +32,9 @@ namespace Nordax.Bank.Recruitment.DataAccess.Repositories
 		{
 			if (model == null) throw new ArgumentNullException();
 
-			var newLoanApplication = _dbContext.Add(new LoanApplication(model));
+			var loanApplication = new LoanApplication(model);
+			loanApplication.CreatedDate = DateTime.Now;
+			var newLoanApplication = _dbContext.Add(loanApplication);
 			await _dbContext.SaveChangesAsync();
 
 			return newLoanApplication.Entity.Id;
