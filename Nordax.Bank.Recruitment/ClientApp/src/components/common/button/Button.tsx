@@ -5,5 +5,5 @@ export const Button = (props: React.PropsWithChildren<any>) => {
 
     const { className, ...propsWithoutClass } = props;
 
-    return <button className={`nordax_button red ${props.className}`} {...propsWithoutClass}>{props.children}</button>;
+    return <button className={`nordax_button red ${props.className == null ? "" : props.className}`} {...propsWithoutClass}>{props.children}</button>;
 }
