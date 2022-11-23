@@ -21,8 +21,8 @@ namespace Nordax.Bank.Recruitment.DataAccess.Tests.RepositoryTests
 		{
 			var dbContextFactoryMock = new Mock<IOptionDbContextFactory>();
 
-			_testDbContext = OptionEfConfig.CreateInMemoryTestDbContext();
-			dbContextFactoryMock.Setup(d => d.Create()).Returns(OptionEfConfig.CreateInMemoryOptionDbContext());
+			_testDbContext = EfConfig.Option.CreateInMemoryTestDbContext();
+			dbContextFactoryMock.Setup(d => d.Create()).Returns(EfConfig.Option.CreateInMemoryDbContext());
 
 			_optionRepository = new OptionRepository(dbContextFactoryMock.Object);
 		}

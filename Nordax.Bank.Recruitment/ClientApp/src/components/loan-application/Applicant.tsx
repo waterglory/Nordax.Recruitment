@@ -23,8 +23,8 @@ const Applicant = (props: React.PropsWithChildren<{
     const formIsValid = () =>
         props.data.applicantFirstName
         && props.data.applicantSurname
-        && props.data.applicantPhoneNo
-        && props.data.applicantEmail;
+        && validatePhone()
+        && validateEmail();
 
     const incomeLevelOptions: { value: string, text: string }[] = [
         { value: "35000", text: "0 - 35,000 kr" },

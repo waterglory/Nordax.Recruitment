@@ -1,20 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nordax.Bank.Recruitment.DataAccess.DbContexts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Nordax.Bank.Recruitment.DataAccess.Tests.Configuration
 {
-	public static class FileEfConfig
+	public class EfContexts<TDbContext> where TDbContext : DbContext
 	{
-		private static readonly DbContextOptions<FileDbContext> FileDbContextOptions =
-			new DbContextOptionsBuilder<FileDbContext>().UseInMemoryDatabase("InMemoryDb").Options;
+		private readonly DbContextOptions<TDbContext> DbContextOptions =
+			new DbContextOptionsBuilder<TDbContext>().UseInMemoryDatabase("InMemoryDb").Options;
 
 		/// <summary>
 		///     Use this context to create test data and verify already persisted data.
 		/// </summary>
 		/// <returns>ApplicationDbContext</returns>
-		public static FileDbContext CreateInMemoryTestDbContext()
+		public TDbContext CreateInMemoryTestDbContext()
 		{
-			var dbContext = new FileDbContext(FileDbContextOptions);
+			var dbContext = Activator.CreateInstance(typeof(TDbContext), DbContextOptions) as TDbContext;
 			dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
 			return dbContext;
@@ -24,9 +29,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.Tests.Configuration
 		///     Use this context to be passed on to a repository and/or used for application code.
 		/// </summary>
 		/// <returns>ApplicationDbContext</returns>
-		public static FileDbContext CreateInMemoryFileDbContext()
-		{
-			return new(FileDbContextOptions);
-		}
+		public TDbContext CreateInMemoryDbContext() =>
+			Activator.CreateInstance(typeof(TDbContext), DbContextOptions) as TDbContext;
 	}
 }

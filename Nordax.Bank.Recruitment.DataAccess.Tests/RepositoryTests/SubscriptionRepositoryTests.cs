@@ -21,8 +21,8 @@ namespace Nordax.Bank.Recruitment.DataAccess.Tests.RepositoryTests
         {
             var dbContextFactoryMock = new Mock<ISubscriptionDbContextFactory>();
 
-            _testDbContext = SubscriptionEfConfig.CreateInMemoryTestDbContext();
-            dbContextFactoryMock.Setup(d => d.Create()).Returns(SubscriptionEfConfig.CreateInMemorySubscriptionDbContext());
+            _testDbContext = EfConfig.Subscription.CreateInMemoryTestDbContext();
+            dbContextFactoryMock.Setup(d => d.Create()).Returns(EfConfig.Subscription.CreateInMemoryDbContext());
 
             _subscriptionRepository = new SubscriptionRepository(dbContextFactoryMock.Object);
         }

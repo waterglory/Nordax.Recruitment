@@ -23,8 +23,8 @@ namespace Nordax.Bank.Recruitment.DataAccess.Tests.RepositoryTests
 		{
 			var dbContextFactoryMock = new Mock<IFileDbContextFactory>();
 
-			_testDbContext = FileEfConfig.CreateInMemoryTestDbContext();
-			dbContextFactoryMock.Setup(d => d.Create()).Returns(FileEfConfig.CreateInMemoryFileDbContext());
+			_testDbContext = EfConfig.File.CreateInMemoryTestDbContext();
+			dbContextFactoryMock.Setup(d => d.Create()).Returns(EfConfig.File.CreateInMemoryDbContext());
 
 			_fileRepository = new FileRepository(dbContextFactoryMock.Object);
 		}
