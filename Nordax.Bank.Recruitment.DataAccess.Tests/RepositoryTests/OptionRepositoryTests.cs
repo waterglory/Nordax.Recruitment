@@ -34,7 +34,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.Tests.RepositoryTests
 		}
 
 		[TestMethod]
-		public async Task GetBindingPeriods_ShouldBeEmpty()
+		public async Task GetBindingPeriods_NoData_ShouldBeEmpty()
 		{
 			var bindingPeriods = await _optionRepository.GetBindingPeriods();
 
@@ -57,7 +57,7 @@ namespace Nordax.Bank.Recruitment.DataAccess.Tests.RepositoryTests
 			var bindingPeriods = await _optionRepository.GetBindingPeriods();
 
 			Assert.IsNotNull(bindingPeriods);
-			Assert.AreEqual(3, bindingPeriods.Count);
+			Assert.AreEqual(bindingPeriods.Count, bindingPeriods.Count);
 			testPeriods.ForEach(tp =>
 			{
 				Assert.IsTrue(bindingPeriods.Any(bp => bp.Length == tp.Length && bp.InterestRate == tp.InterestRate));
