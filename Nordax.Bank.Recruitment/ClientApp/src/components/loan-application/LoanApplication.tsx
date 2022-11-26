@@ -48,12 +48,13 @@ const LoanApplication = () => {
     const setNext = (e: Event) => {
         if (e && e.preventDefault) e.preventDefault();
         if (pageIndex < pages.length - 1)
-            setPageIndex(pageIndex + 1)
+            setPageIndex(pageIndex + 1);
     }
 
     const setPrevious = () => {
         if (pageIndex > 0)
-            setPageIndex(pageIndex - 1)
+            setPageIndex(pageIndex - 1);
+        submitRef.current?.reset();
     }
 
     const retry = () => {
@@ -110,7 +111,7 @@ const LoanApplication = () => {
         <OrganizationNo applicantOrganizationNo={loanApplication.applicantOrganizationNo} events={loanApplicationEvents} apiClient={apiClient} ref={organizationNoRef} />,
         <Applicant data={loanApplication} events={loanApplicationEvents} />,
         <Documents events={loanApplicationEvents} onDocumentUpload={onDocumentUpload} apiClient={apiClient} ref={documentsRef} />,
-        <Submit data={loanApplication} apiClient={apiClient} ref={submitRef} />
+        <Submit data={loanApplication} events={loanApplicationEvents} apiClient={apiClient} ref={submitRef} />
     ];
 
     return (
@@ -120,12 +121,12 @@ const LoanApplication = () => {
                     {p}
                 </TransitionPage>
             ))}
-            {pageIndex > 0 && pageIndex < pages.length - 1 && !canRetry ?
+            {pageIndex > 0 && !canRetry ?
                 <div style={navigationDivStyle}>
                     <Button style={navigationButtonStyle} onClick={() => setPrevious()}>Go Back</Button>
                 </div>
                 : null}
-            {pageIndex === pages.length - 1 || canRetry ?
+            {canRetry ?
                 <div style={navigationDivStyle}>
                     <Button style={navigationButtonStyle} onClick={() => retry()}>Retry</Button>
                 </div>

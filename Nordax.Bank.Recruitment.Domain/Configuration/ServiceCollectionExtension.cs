@@ -33,6 +33,7 @@ namespace Nordax.Bank.Recruitment.Domain.Configuration
 				.AddScoped<ILoanApplicationValidator, NameValidator>()
 				.AddScoped<ILoanApplicationValidator, EmailValidator>()
 				.AddScoped<ILoanApplicationValidator, PhoneValidator>()
+				.AddScoped<ILoanApplicationValidator, AgeValidator>()
 				.AddScoped<ILoanApplicationValidator, LoanAmountValidator>()
 				.AddScoped<ILoanApplicationValidator, BindingPeriodValidator>()
 				.AddScoped<ILoanApplicationValidator, DocumentsValidator>();

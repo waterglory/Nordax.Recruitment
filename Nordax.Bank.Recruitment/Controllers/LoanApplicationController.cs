@@ -122,8 +122,10 @@ namespace Nordax.Bank.Recruitment.Controllers
 		[HttpPost]
 		[SwaggerResponse(StatusCodes.Status200OK, "Loan Application registered successfully", typeof(RegisterLoanApplicationResponse))]
 		[SwaggerResponse(StatusCodes.Status409Conflict, "Customer has ongoing application", typeof(RegisterLoanApplicationResponse))]
+		[SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid loan application data", typeof(LoanApplicationValidationResponse))]
 		[ProducesResponseType(typeof(RegisterLoanApplicationResponse), StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(RegisterLoanApplicationResponse), StatusCodes.Status409Conflict)]
+		[ProducesResponseType(typeof(LoanApplicationValidationResponse), StatusCodes.Status400BadRequest)]
 		public async Task<IActionResult> SubmitLoanApplication([Required][FromBody] RegisterLoanApplicationRequest request)
 		{
 			try
@@ -159,6 +161,10 @@ namespace Nordax.Bank.Recruitment.Controllers
 			catch (CustomerOngoingLoanApplicationException ex)
 			{
 				return Conflict(new RegisterLoanApplicationResponse { CaseNo = ex.Message });
+			}
+			catch (Shared.Exceptions.ValidationException ex)
+			{
+				return BadRequest(new LoanApplicationValidationResponse { Reason = ex.Message });
 			}
 			catch (Exception ex)
 			{
