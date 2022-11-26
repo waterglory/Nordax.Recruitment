@@ -6,10 +6,12 @@ import { Button } from '../common/button/Button';
 import '../common/button/Button.css';
 import '../common/common.css';
 import { useFormStyles } from "../common/form.styles";
+import LoanApplicationEvents from './loanApplicationEvents';
 import Resettable from "./resettable";
 
 const Submit = forwardRef((props: React.PropsWithChildren<{
     data: RegisterLoanApplicationRequest,
+    events: LoanApplicationEvents,
     apiClient: IHttpClient
 }>, ref: Ref<Resettable>) => {
     const [agreeTerms, setAgreeTerms] = useState(false);
@@ -24,6 +26,7 @@ const Submit = forwardRef((props: React.PropsWithChildren<{
             .then((res) => {
                 setCaseNo(res.caseNo);
                 setExisting(false);
+                props.events.onEndOfFlow();
             })
             .catch((e) => {
                 switch (e.status) {
@@ -32,6 +35,9 @@ const Submit = forwardRef((props: React.PropsWithChildren<{
                             setCaseNo(json.caseNo);
                             setExisting(true);
                         });
+                        break;
+                    case 400:
+                        e.json().then((json: any) => setError(json.reason));
                         break;
                     default:
                         setError(e.status + " " + e.statusText);

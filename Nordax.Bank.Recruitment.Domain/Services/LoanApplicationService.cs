@@ -47,11 +47,6 @@ namespace Nordax.Bank.Recruitment.Domain.Services
 
 		private void Validate(LoanApplicationModel model)
 		{
-			if (model == null) throw new ArgumentNullException("LoanApplication");
-			if (model.Applicant == null) throw new ArgumentNullException(nameof(model.Applicant));
-			if (model.Loan == null) throw new ArgumentNullException(nameof(model.Loan));
-			if (model.Documents == null) throw new ArgumentNullException(nameof(model.Documents));
-
 			string reason = null;
 			if (_loanApplicationValidators.Any(v => !v.Validate(model, out reason)))
 				throw new ValidationException(reason);
@@ -93,6 +88,11 @@ namespace Nordax.Bank.Recruitment.Domain.Services
 		/// <returns>A string representing the case number for the loan.</returns>
 		public async Task<string> SubmitLoanApplication(LoanApplicationModel model)
 		{
+			if (model == null) throw new ArgumentNullException("LoanApplication");
+			if (model.Applicant == null) throw new ArgumentNullException(nameof(model.Applicant));
+			if (model.Loan == null) throw new ArgumentNullException(nameof(model.Loan));
+			if (model.Documents == null) throw new ArgumentNullException(nameof(model.Documents));
+
 			model.CleanUpOrganizationNo();
 			Validate(model);
 			await CheckOngoingApplication(model.Applicant.OrganizationNo);
