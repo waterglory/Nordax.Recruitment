@@ -57,18 +57,27 @@ namespace Nordax.Bank.Recruitment.Domain.Services
 				throw new ValidationException(reason);
 		}
 
-		private Task UpdateCustomer(ApplicantModel applicant) =>
-			_customerProvider.MergeCustomer(new CustomerModel
+		private async Task UpdateCustomer(ApplicantModel applicant)
+		{
+			try
 			{
-				OrganizationNo = applicant.OrganizationNo,
-				FirstName = applicant.FirstName,
-				Surname = applicant.Surname,
-				Email = applicant.Email,
-				PhoneNo = applicant.PhoneNo,
-				Address = applicant.Address,
-				IncomeLevel = applicant.IncomeLevel,
-				IsPoliticallyExposed = applicant.IsPoliticallyExposed,
-			});
+				await _customerProvider.MergeCustomer(new CustomerModel
+				{
+					OrganizationNo = applicant.OrganizationNo,
+					FirstName = applicant.FirstName,
+					Surname = applicant.Surname,
+					Email = applicant.Email,
+					PhoneNo = applicant.PhoneNo,
+					Address = applicant.Address,
+					IncomeLevel = applicant.IncomeLevel,
+					IsPoliticallyExposed = applicant.IsPoliticallyExposed,
+				});
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex);
+			}
+		}
 
 		public async Task CheckOngoingApplication(string organizationNo)
 		{
