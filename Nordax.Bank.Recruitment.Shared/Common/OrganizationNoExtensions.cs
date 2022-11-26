@@ -14,7 +14,7 @@ namespace Nordax.Bank.Recruitment.Shared.Common
 		{
 			organizationNo = organizationNo.Replace("-", string.Empty);
 			if (organizationNo.Length > 10)
-				organizationNo.Substring(organizationNo.Length - 10);
+				organizationNo = organizationNo.Substring(organizationNo.Length - 10);
 			return organizationNo;
 		}
 
